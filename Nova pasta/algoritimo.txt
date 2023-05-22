@@ -1,0 +1,16 @@
+ex 1 
+1.ler um n informado pelo usuario
+2. se o numero for >10
+2. se nao  nao e  <10
+=========================
+ex 2 
+1.digitar quntida de horas
+2.precohora
+calcular a quantidade de horas extras
+calcular o salario total
+=================================
+ex3
+digite o salario 
+digite o valor efetuado 
+calcular comissao
+calcular o salario total

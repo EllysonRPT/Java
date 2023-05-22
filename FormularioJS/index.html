@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="" onsubmit="enviar()">
+        <div class="container">
+            <div class="row">
+                <div class="offset-3 col-sm-6 offset-3">
+                    <label for="exampleInputEmail1" class="form-label">NOME COMPLETO </label>
+                    <input type="text" class="form-control" id="nome" aria-describedby="nome">
+                    <div id="nome" class="form-text"> </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-3 col-sm-6 offset-3">
+                    <label for="exampleInputEmail1" class="form-label">ENDEREÇO</label>
+                    <input type="text" class="form-control" id="endereço" aria-describedby="endereço">
+                    <div id="endereço" class="form-text"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-3 col-sm-6 offset-3">
+                    <label for="exampleInputEmail1" class="form-label">EMAIL</label>
+                    <input type="email" class="form-control" id="email" aria-describedby="email">
+                    <div id="email" class="form-text"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-3 col-sm-6 offset-3">
+                    <label for="exampleInputEmail1" class="form-label">CONFIRMAR EMAIL</label>
+                    <input type="email" class="form-control" id="Remail" aria-describedby="email">
+                    <div id="email" class="form-text"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-3 col-sm-6 offset-3">
+                    <label for="exampleInputPassword1" class="form-label">SENHA</label>
+                    <input type="password" class="form-control" id="senha">
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-3 col-sm-6 offset-3">
+                    <label for="exampleInputPassword1" class="form-label">CONFIRMAR SENHA</label>
+                    <input type="password" class="form-control" id="Rsenha">
+                </div>
+            </div>
+
+            <div class="row ">
+                <div class="offset-3 col-sm-6 offset-3">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">LEMBRA-ME</label>
+                    <br><br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-3 col-sm-6 offset-3">
+                    <button type="submit" class="btn btn-primary" onclick="enviar()">ENVIAR</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</body>
+<script src="script.js"></script>
+
+</html>

@@ -1,0 +1,33 @@
+digitar a senha
+se for senha correta "acesso permitido"
+se for senha incorreta "acesso negado"
+ ------------------------------------------------
+ --------------------------------------------
+ digita a  quantidade de maca
+se for menor que 12 0,30
+se for maior que 12 0,25 
+ ---------------------------
+------------------------
+escrever os tres valores
+coloca-los em ordem crescente 
+
+ABC
+ACB
+BCA
+BAC
+CAB
+CBA
+-----------------------------
+-------------------------------
+digite seu sexo "m" ou "F
+digite sua altura "m,cm"
+
+
+--------------------------------
+-------------------------------
+digite a nota 1
+digite a nota 2
+dividir a nota 1 nota 2 /2
+digitar afrequencia
+=========================
+=========================
