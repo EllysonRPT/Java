@@ -4,7 +4,10 @@ public class Agenda {
     public String nome;
     public int idade;
     public double altura;
-    
+    //
+    //contrutor(atributo)
+    //contrutor método = classe
+    // setters and getter
     public String getNome() {
         return nome;
     }

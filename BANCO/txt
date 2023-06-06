@@ -1,0 +1,28 @@
+contador da conta
+diferenciar juridica e fisica
+
+
+
+
+
+1-	Criar uma aplicação bancaria com funcionalidades:
+
+1º ETAPA – Escolher o Tipo de ação 
+a.	criar conta
+1.	Pessoa Física
+2.	Pessoa Jurídica
+b.	permitir busca de conta pelo nº da conta/ou nome
+1.	Pessoa Física 
+2.	Pessoa Jurídica
+
+
+_________________________________________
+2 ETAPA – Após acessar a conta
+A.	verificar saldo;
+B.	criar método saque;
+C.	criar métodos depósito;
+D.	criar método empréstimo;
+E.	Sair da Conta
+
+
+
