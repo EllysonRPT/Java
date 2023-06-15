@@ -32,7 +32,7 @@ public abstract class Conta {
     }
 
     public void saque() {
-        int saque = Integer.parseInt(JOptionPane.showInputDialog("INFORM O VALOR QUE DESEJA SACAR"));
+        int saque = Integer.parseInt(JOptionPane.showInputDialog("INFORME O VALOR QUE DESEJA SACAR"));
         if (saque < saldo) {
             saldo -= saque;
             JOptionPane.showMessageDialog(null, "SAQUE REALIZADO,SEU SALDO  É DE" + saldo);
