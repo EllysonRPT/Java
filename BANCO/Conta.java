@@ -58,7 +58,7 @@ public abstract class Conta {
             JOptionPane.showMessageDialog(null, "EMPRÉSTIMO REALIZADO,SEU SALDO  É DE" + saldo);
         } 
         else {
-            JOptionPane.showMessageDialog(null, "O VALOR DO EMPRES´TIMO DEVE SER DE 1R$ Á 500R$");
+            JOptionPane.showMessageDialog(null, "O VALOR DO EMPRESÉTIMO DEVE SER DE 1R$ Á 500R$");
         }
     }
 }

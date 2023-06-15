@@ -1,5 +1,6 @@
 package BANCO;
 
+import javax.sql.rowset.spi.SyncResolver;
 import javax.swing.JOptionPane;
 
 public class App {
@@ -30,15 +31,15 @@ public class App {
                 contasPf[contPf].setSaldo(1000);
                 contasPf[contPf].setnConta(1000 + contPf);
                 contPf++;
-            }
-            if (acao == 2) {
+                 JOptionPane.showMessageDialog(null, " PARABÉNS VOCÊ É POBRE ");
+            } else if (acao == 2) {
                 // abrir conta PJ
                 // criar conta
                 // instanciar conta
                 contasPj[contPj] = new ContaPJ(); // objeto criado
                 // preencher as informações da conta
                 contasPj[contPj].setNome(JOptionPane.showInputDialog("INFORME O NOME"));
-                contasPj[contPj].setnCNPJ(JOptionPane.showInputDialog("INFORME CPF"));
+                contasPj[contPj].setnCNPJ(JOptionPane.showInputDialog("INFORME CNPJ"));
                 contasPj[contPj].setSaldo(4000);
                 contasPj[contPj].setnConta(2000 + contPj);
                 contPj++;
@@ -56,15 +57,15 @@ public class App {
                 }
                 boolean acessar = true;
                 while (acessar) {
-                    int acao2 = Integer.parseInt(JOptionPane.showInputDialog("AÇÃO DESEJADA:"
+                    int acao2 = Integer.parseInt(JOptionPane.showInputDialog("\n CLIENTE "+contasPf[contaAtual].getNome()+"\n CONTA "+ contasPf[contaAtual].getnConta()+"\n CPF "+contasPf[contaAtual].getnCPF()+"AÇÃO DESEJADA:"
                             + "\n 1- VERIFICAR SALDO"
                             + "\n 2- SAQUE "
                             + "\n 3- DEPOSITAR"
                             + "\n 4- EMPRÉSTIMO"
                             + "\n 5- SAIR DA CONTA"));
                     if (acao2 == 1) {
-                        //jop
-                        JOptionPane.showMessageDialog(null,"seu saldo é de "+contasPf[contaAtual].getSaldo());
+                        // jop
+                        JOptionPane.showMessageDialog(null, "seu saldo é de " + contasPf[contaAtual].getSaldo());
                     } else if (acao2 == 2) {
                         contasPf[contaAtual].saque();
                     } else if (acao2 == 3) {
@@ -72,7 +73,7 @@ public class App {
                     } else if (acao2 == 4) {
                         contasPf[contaAtual].empréstimo();
                     } else {
-                        acessar=false;
+                        acessar = false;
                         // n/invalido
                     }
 
@@ -90,14 +91,15 @@ public class App {
                 }
                 boolean acessar = true;
                 while (acessar) {
-                    int acao2 = Integer.parseInt(JOptionPane.showInputDialog("AÇÃO DESEJADA:"
+                    int acao2 = Integer.parseInt(JOptionPane.showInputDialog("\n NUMERO DA CONTA: "+contasPj[contaAtual].getnConta()+ "\n CLIENTE " +contasPj[contaAtual].getNome()+"\n CNPJ: "+ contasPj[contaAtual].getnCNPJ() 
+                            +"\n AÇÃO DESEJADA  "
                             + "\n 1- VERIFICAR SALDO"
-                            + "\n 1- SAQUE "
-                            + "\n 1- DEPOSITAR"
-                            + "\n 1- EMPRÉSTIMO"
-                            + "\n 1- SAIR DA CONTA"));
+                            + "\n 2- SAQUE "
+                            + "\n 3- DEPOSITAR"
+                            + "\n 4- EMPRÉSTIMO"
+                            + "\n 5- SAIR DA CONTA"));
                     if (acao2 == 1) {
-                        contasPj[contaAtual].getSaldo();
+                        JOptionPane.showMessageDialog(null, "seu saldo é de " + contasPj[contaAtual].getSaldo());
                     } else if (acao2 == 2) {
                         contasPj[contaAtual].saque();
                     } else if (acao2 == 3) {
@@ -105,13 +107,15 @@ public class App {
                     } else if (acao2 == 4) {
                         contasPj[contaAtual].empréstimo();
                     } else {
+                        acessar = false;
                         // n/invalido
                     }
 
                 }
-            }
-           
+            } else {
+                aberta = false;
 
+            }
         }
     }
 }
