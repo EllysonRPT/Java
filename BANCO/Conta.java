@@ -53,7 +53,7 @@ public abstract class Conta {
 
     public void empréstimo() {
         int empréstimo = Integer.parseInt(JOptionPane.showInputDialog("QUAL O VALOR DO EMPRÉSTIMO?"));
-        if (empréstimo < 500 && empréstimo>0) {
+        if (empréstimo <= 500 && empréstimo>0) {
             saldo += empréstimo;
             JOptionPane.showMessageDialog(null, "EMPRÉSTIMO REALIZADO,SEU SALDO  É DE" + saldo);
         } 

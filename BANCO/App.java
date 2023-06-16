@@ -53,87 +53,94 @@ public class App {
 
             else if (acao == 3) {// BUSCAR A CONTA JÁ CRIADA DA PF
                 int nContaBusca = Integer.parseInt(JOptionPane.showInputDialog("INFORME O NUMERO DA CONTA BUSCADO"));
-                for (int i = 0; i < contasPf.length; i++) {
-                    // busca pelo n/conta
-                    if (nContaBusca == contasPf[i].getnConta()) {
-                        contaAtual = i;
-                        JOptionPane.showMessageDialog(null, "CONTA ENCONTRADA");}
-                        else{
-                             JOptionPane.showMessageDialog(null, "CONTA ENCONTRADA")
-                        }
-                        break;
-                   
-                }
-                boolean acessar = true;
-                while (acessar) {
-                    int acao2 = Integer.parseInt(JOptionPane.showInputDialog("\n CONTA FÍSICA " + "\n CLIENTE: "
-                            + contasPf[contaAtual].getNome() + "\n CONTA: " + contasPf[contaAtual].getnConta()
-                            + "\n CPF: " + contasPf[contaAtual].getnCPF() + "\n AÇÃO DESEJADA:"
-                            + "\n 1- VERIFICAR SALDO"
-                            + "\n 2- SAQUE "
-                            + "\n 3- DEPOSITAR"
-                            + "\n 4- EMPRÉSTIMO"
-                            + "\n 5- SAIR DA CONTA"));
-                    if (acao2 == 1) {
-                        // jop
-                        JOptionPane.showMessageDialog(null, " SEU SALDO É DE " + contasPf[contaAtual].getSaldo());
-                    } else if (acao2 == 2) {
-                        contasPf[contaAtual].saque();
-                    } else if (acao2 == 3) {
-                        contasPf[contaAtual].depósito();
-                    } else if (acao2 == 4) {
-                        contasPf[contaAtual].empréstimo();
-                    } else {
-                        acessar = false;
-                        // n/invalido
-                    }
+                if (nContaBusca - 1000 >= 0 && nContaBusca - 1000 <= contPf - 1) {
+                    for (int i = 0; i < contasPf.length; i++) {
+                        // busca pelo n/conta
+                        if (nContaBusca == contasPf[i].getnConta()) {
+                            contaAtual = i;
+                            JOptionPane.showMessageDialog(null, "CONTA ENCONTRADA");
 
+                            boolean acessar = true;
+                            while (acessar) {
+                                int acao2 = Integer
+                                        .parseInt(JOptionPane.showInputDialog("\n CONTA FÍSICA " + "\n CLIENTE: "
+                                                + contasPf[contaAtual].getNome() + "\n CONTA: "
+                                                + contasPf[contaAtual].getnConta()
+                                                + "\n CPF: " + contasPf[contaAtual].getnCPF() + "\n AÇÃO DESEJADA:"
+                                                + "\n 1- VERIFICAR SALDO"
+                                                + "\n 2- SAQUE "
+                                                + "\n 3- DEPOSITAR"
+                                                + "\n 4- EMPRÉSTIMO"
+                                                + "\n 5- SAIR DA CONTA"));
+                                if (acao2 == 1) {
+                                    // jop
+                                    JOptionPane.showMessageDialog(null,
+                                            " SEU SALDO É DE " + contasPf[contaAtual].getSaldo());
+                                } else if (acao2 == 2) {
+                                    contasPf[contaAtual].saque();
+                                } else if (acao2 == 3) {
+                                    contasPf[contaAtual].depósito();
+                                } else if (acao2 == 4) {
+                                    contasPf[contaAtual].empréstimo();
+                                } else {
+                                    acessar = false;
+                                    // n/invalido
+                                }
+                            }
+                            break;
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Conta não existe");
                 }
 
             } else if (acao == 4) {// BUSCAR A CONTA JÁ CRIADA DA PJ
-                int nContaBusca = Integer.parseInt(JOptionPane.showInputDialog(" INFORME O NUMERO DA CONTA BUSCADO "));
-                for (int i = 0; i < contasPj.length; i++) {
-                    // busca pelo n/conta
-                    if (nContaBusca == contasPj[i].getnConta()) {
-                        contaAtual = i;
-                        JOptionPane.showMessageDialog(null, " CONTA ENCONTRADA ");
-                        break;
-                    }
-                }
-                boolean acessar = true;
-                while (acessar) {
-                    int acao2 = Integer.parseInt(JOptionPane.showInputDialog("\n CONTA JURÍDICA "
-                            + "\n NUMERO DA CONTA: " + contasPj[contaAtual].getnConta() + "\n CLIENTE "
-                            + contasPj[contaAtual].getNome() + "\n CNPJ: " + contasPj[contaAtual].getnCNPJ()
-                            + "\n AÇÃO DESEJADA  "
-                            + "\n 1- VERIFICAR SALDO"
-                            + "\n 2- SAQUE "
-                            + "\n 3- DEPOSITAR"
-                            + "\n 4- EMPRÉSTIMO"
-                            + "\n 5- SAIR DA CONTA"));
-                    if (acao2 == 1) {
-                        JOptionPane.showMessageDialog(null, " SEU SALDO É DE " + contasPj[contaAtual].getSaldo());
-                    } else if (acao2 == 2) {
-                        contasPj[contaAtual].saque();
-                    } else if (acao2 == 3) {
-                        contasPj[contaAtual].depósito();
-                    } else if (acao2 == 4) {
-                        contasPj[contaAtual].empréstimo();
-                    } else {
-                        acessar = false;
-                        // n/invalido
-                    }
+                int nContaBusca = Integer.parseInt(JOptionPane.showInputDialog("INFORME O NUMERO DA CONTA BUSCADO"));
+                if (nContaBusca - 2000 >= 0 && nContaBusca - 2000 <= contPj - 1) {
+                    for (int i = 0; i < contasPj.length; i++) {
+                        // busca pelo n/conta
+                        if (nContaBusca == contasPj[i].getnConta()) {
+                            contaAtual = i;
+                            JOptionPane.showMessageDialog(null, "CONTA ENCONTRADA");
 
+                            boolean acessar = true;
+                            while (acessar) {
+                                int acao2 = Integer
+                                        .parseInt(JOptionPane.showInputDialog("\n CONTA JURÍDICA " + "\n CLIENTE: "
+                                                + contasPj[contaAtual].getNome() + "\n CONTA: "
+                                                + contasPj[contaAtual].getnConta()
+                                                + "\n CPF: " + contasPj[contaAtual].getnCNPJ() + "\n AÇÃO DESEJADA:"
+                                                + "\n 1- VERIFICAR SALDO"
+                                                + "\n 2- SAQUE "
+                                                + "\n 3- DEPOSITAR"
+                                                + "\n 4- EMPRÉSTIMO"
+                                                + "\n 5- SAIR DA CONTA"));
+                                if (acao2 == 1) {
+                                    // jop
+                                    JOptionPane.showMessageDialog(null,
+                                            " SEU SALDO É DE " + contasPj[contaAtual].getSaldo());
+                                } else if (acao2 == 2) {
+                                    contasPj[contaAtual].saque();
+                                } else if (acao2 == 3) {
+                                    contasPj[contaAtual].depósito();
+                                } else if (acao2 == 4) {
+                                    contasPj[contaAtual].empréstimo();
+                                } else {
+                                    acessar = false;
+                                    // n/invalido
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Conta não existe");
                 }
             }
-             
-            else if (acao==5){
-                aberta = false;
-               JOptionPane.showMessageDialog(null, " ");
-            }
-            else{
-                
-            }
+
         }
     }
 }
