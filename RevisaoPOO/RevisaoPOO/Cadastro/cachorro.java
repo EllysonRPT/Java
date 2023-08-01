@@ -3,7 +3,7 @@ package RevisaoPOO.Cadastro;
 public class cachorro extends Animal {
 
     public cachorro(String nome, double peso, String raca, String proprietario) {
-        super(nome, peso, raca, proprietario);
+        super(nome, peso, raca, proprietario, RA);
         //TODO Auto-generated constructor stub
     }
 
