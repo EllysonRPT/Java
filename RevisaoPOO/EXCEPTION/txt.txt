@@ -1,0 +1,4 @@
+1 digite a opertação 
+2 digite o numero 
+3 digite outro numero 
+4 seu resultado
