@@ -1,6 +1,6 @@
 package ArrayList;
 
-import java.util.HashMap;
+import java.util.*;
 
 public class ExHashMap {
     public static void main(String[] args) {
