@@ -125,6 +125,6 @@ public class ExerciciosExtra {
 
     public void Extra3() {
         int senha=1234;
-        fori
+        
     }
 }

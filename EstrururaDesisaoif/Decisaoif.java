@@ -1,5 +1,5 @@
 package EstrururaDesisaoif;
-import java.time.temporal.IsoFields;
+
 import java.util.Scanner;
 
 public class Decisaoif {
@@ -43,7 +43,7 @@ public class Decisaoif {
          percentualDesconto = 10.0;
         }
         else if(precoProduto>=100){
-
+          percentualDesconto = 5.0;
         }
         else{percentualDesconto = 0; 
         }
