@@ -5,6 +5,8 @@ public class FLExemplo {
     public FLExemplo(){
         JFrame frame =new JFrame("JANELA");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        //layout do jframe é pradrao gridLayout
+        //ALTERAR DE FLOW
       JPanel c = new JPanel();
       c.add(new JButton("1"));
       c.add(new JTextField(9));

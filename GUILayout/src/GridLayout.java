@@ -12,4 +12,7 @@ public class GridLayout {
         frame.pack();
         frame.setVisible(true);
     }
+
+    public GridLayout(int i, int j) {
+    }
 }

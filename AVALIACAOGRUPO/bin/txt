@@ -1,0 +1,19 @@
+salario
+peso,altura/ media de peso  
+gasto de combustivel
+
+
+CALC SALARIO
+
+Double horaT = Double.parseDouble(JOptionPane.showInputDialog("HORAS TRABALADAS "));
+        Double VHora = Double.parseDouble(JOptionPane.showInputDialog("DIGITE VALOR DA HORA"));
+
+        Double salarioBR = horaT * horaT;
+        Double salario = VHora * horaT;
+        Double inss = salario * 0.08;
+        Double sindicato = salario * 0.05;
+        Double impostoR = salario * 0.11;
+        salario = (salario * 11) / 100;
+        salario = (salario * 8) / 100;
+        salario = (salario * 5) / 100;
+        JOptionPane.showMessageDialog(null,"salario liquido" +salario+" \n ");
