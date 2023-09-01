@@ -17,3 +17,29 @@ Double horaT = Double.parseDouble(JOptionPane.showInputDialog("HORAS TRABALADAS 
         salario = (salario * 8) / 100;
         salario = (salario * 5) / 100;
         JOptionPane.showMessageDialog(null,"salario liquido" +salario+" \n ");
+
+
+
+
+        JButton  C = new JButton("C");
+        JButton  p = new JButton("()");
+        JButton  por = new JButton("%");
+        JButton  div = new JButton("\u00f7");
+        JButton  sete= new JButton("7");
+        JButton  oit = new JButton("8");
+        JButton  nov = new JButton("9");
+        JButton  mult = new JButton("*");
+        JButton  qua = new JButton("4");
+        JButton  cin = new JButton("5");
+        JButton  se = new JButton("6");
+        JButton  men = new JButton("-");
+        JButton  um = new JButton("1");
+        JButton  dois = new JButton("2");
+        JButton  tre = new JButton("3");
+        JButton  mais = new JButton("+");
+        JButton  maimen = new JButton("+/-");
+        JButton  zero = new JButton("0");
+        JButton vir = new JButton(",");
+        JButton  igual = new JButton("=");
+  
+  
