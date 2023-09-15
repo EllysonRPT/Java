@@ -12,28 +12,33 @@ public class Calculadora1 extends JPanel {
         var painel1 = new JPanel();
         JPanel painel2 = new JPanel();
         JPanel painel3 = new JPanel();
-        JPanel painel4 = new JPanel();
+        painel3.setLayout(new java.awt.GridBagLayout());
 
+        // POSICIONAMENTO DO PAINEL
         this.add(painel1, BorderLayout.CENTER);
         this.add(painel2, BorderLayout.NORTH);
+
+        painel3.setBackground(Color.gray);
+        painel1.setBackground(Color.lightGray);
 
         GridLayout outro = new GridLayout(5, 5, 4, 4);
         GridLayout outro1 = new GridLayout(1, 1);
         painel1.setLayout(outro);
         painel2.setLayout(outro1);
         painel2.add(painel3);
-        painel3.add(new JLabel(" INSERIR VALOR"));
+        JLabel la = new JLabel("INSERIR VALOR"); // LABEL CRIADA
+        la.setFont(new Font("Arial", Font.BOLD, 20));  // FONTE E TAMANHO CONFIGUARDO
+        painel3.add(la); // LABEL ADICIONADA AO PAINEL
+
+        
+
         JTextField caixa1 = new JTextField(15);
         caixa1.setFont(new Font("Serif", Font.PLAIN, 26));
+        caixa1.setBackground(Color.decode("#8d9d9e"));
+        painel2.add(caixa1); 
 
-        painel2.add(caixa1);
-
-        // String textBotoes[] = { "C","()","%", "\u00f7","7", "8", "9","*", "4", "5",
-        // "6","-","1","2", "3", "+", "+/-" , "0", ",","=" };
-        // for (int i = 0; i < textBotoes.length; i++) {
-        // painel1.add(new JButton(textBotoes[i]));
-
-        // }
+         // CRIAR BOTÕES
+        
         JButton C = new JButton("C");
         JButton p = new JButton("()");
         JButton por = new JButton("%");
@@ -55,6 +60,7 @@ public class Calculadora1 extends JPanel {
         JButton vir = new JButton(",");
         JButton igual = new JButton("=");
 
+        // ADICIONAR BOTÕES AO PAINEL
         painel1.add(C);
         painel1.add(p);
         painel1.add(por);
@@ -76,18 +82,15 @@ public class Calculadora1 extends JPanel {
         painel1.add(vir);
         painel1.add(igual);
 
-        C.addActionListener(i-> { 
-                  caixa1.setText("");
-                  
-         });
-        um.addActionListener(i-> { 
-               String textIni =caixa1.getText();
-                  caixa1.setText(textIni+1);
-         });
+        // ADICIONAR AÇÃO AOS BOTÕES
+        C.addActionListener(i -> {
+            caixa1.setText("");
 
-        
-
-        // ADICIONAR ELEMENTOS AOS PAINEIS
+        });
+        um.addActionListener(i -> {
+            String textIni = caixa1.getText();
+            caixa1.setText(textIni + 1);
+        });
 
     }
 
