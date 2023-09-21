@@ -50,7 +50,7 @@ public class Calculadora2 extends JPanel {
         caixa2.setFont(new Font("Serif", Font.PLAIN, 26)); //FONTE E TAMANHO
         painel4.add(caixa2); //CAMPO ADCIONADO
 
-        
+     
         caixa1.setBackground(Color.decode("#74B4CF"));
         caixa2.setBackground(Color.decode("#74B4CF"));
 
