@@ -14,8 +14,10 @@ public class Calculadora2 extends JPanel {
         JPanel painel3 = new JPanel();// PAINEL LABEL
         JPanel painel4 = new JPanel();// PAINEL CAIXA
         JPanel painel5 = new JPanel();// PAINEL LABEL
-      painel3.setBackground(Color.lightGray);
-      painel5.setBackground(Color.GRAY);
+        //SETANDO CORES
+    painel3.setBackground(Color.decode("#8d9d9e"));
+    painel5.setBackground(Color.decode("#8d9d9e"));
+    
       
 
         painel3.setLayout(new java.awt.GridBagLayout());
@@ -25,7 +27,7 @@ public class Calculadora2 extends JPanel {
         this.add(painel4, BorderLayout.SOUTH); // POSICIONAMENTO DO PAINEL
 
         GridLayout outro = new GridLayout(4, 5, 4, 4); // TAMANHO E ESPA;AMENTO DE NUMEROS
-        GridLayout outro1 = new GridLayout(1, 1); // TAMANHO DA CAIXA DE NUMEROS
+        GridLayout outro1 = new GridLayout(1, 1,1,1); // TAMANHO DA CAIXA DE NUMEROS
         painel1.setLayout(outro);// NUMEROS
         painel2.setLayout(outro1);//  TAMANHO DE CAIXA  SETADA
         painel4.setLayout(outro1);// TAMANHO DE CAIXA 2 SETADA
@@ -47,6 +49,10 @@ public class Calculadora2 extends JPanel {
         JTextField caixa2 = new JTextField(15); // CAMPO DE ESCREVER CRIADO
         caixa2.setFont(new Font("Serif", Font.PLAIN, 26)); //FONTE E TAMANHO
         painel4.add(caixa2); //CAMPO ADCIONADO
+
+        
+        caixa1.setBackground(Color.decode("#74B4CF"));
+        caixa2.setBackground(Color.decode("#74B4CF"));
 
         // CRIAR BOTÕES
         JButton igual = new JButton("=");
