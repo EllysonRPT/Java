@@ -6,7 +6,7 @@ CALCULADORA 1
 E o GridBagLayout para organizar melhor os elementos dentro do painel , 
 mantendo uma organização permitindo que haja um grande espaçamento claro e eficiente dos campos de entrada e botões.
 O maior desafio dessa calculadora foi colocar funcionalidade no botão,enfim decidimos focar mais na estilização. 
--
+
 -Obs:Organizamos todas as calculadoras,em um JTabbedPane, para mais flexibidade.
 -
 
