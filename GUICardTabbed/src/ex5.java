@@ -14,10 +14,12 @@ public class ex5 extends JFrame {
 
         JPanel painel1 = new JPanel();// painel principal
         // add painel principal ao jFrame
+        String intensCB[] = { "home", "pag1", "pag2","pag3","pag4","pag5" };//criando botao
 
+        JButton start = new JButton();
         // criar botao
                  
-
+         
        
         this.add(painel1);
         // set frame
