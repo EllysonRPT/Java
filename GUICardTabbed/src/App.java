@@ -3,6 +3,7 @@ public class App {
         System.out.println("Hello, World!");
         //new ExemploCardLayout(); 
         //new exe();
-        new ex3();
+        // new ex3();
+        new ex5();
     }
 }
