@@ -27,7 +27,7 @@ public class ExemploCardLayout extends JFrame {
         JPanel card2 =new JPanel();
         card2.add(new JTextField("Card com Jtext"));
         //adicionando cards á pilha
-        cards.add(card1,"card1");
+        cards.add(card1,intensCB[0]);
         cards.add(card2,intensCB[1]);
         painel1.add(cards);
         this.add(painel1);
