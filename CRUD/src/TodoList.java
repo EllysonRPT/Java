@@ -24,6 +24,7 @@ public class TodoList extends JFrame {
     public TodoList() {
         // Configuração da janela principal
         super("Tratamento");
+        //NAO SERÁ FECHADO AUTOMATICAMENTE
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         // definição de tamanho da janela
         this.setSize(450, 400);
@@ -88,15 +89,12 @@ public class TodoList extends JFrame {
                 
             }
         });
-
-        // addButton.addActionListener(e -> {
-        //    addTask();
-        // });
-        
+  // Tratamento de evento concluido
         markDoneButton.addActionListener(e -> {
           markTaskDone();
          
         });
+          // Tratamento de evento filtrar
         filterComboBox.addActionListener(e -> {
           filterTasks();
         });
