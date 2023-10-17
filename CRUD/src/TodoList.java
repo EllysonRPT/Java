@@ -1,6 +1,7 @@
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -20,15 +21,12 @@ public class TodoList extends JFrame {
     private List<Task> tasks;
 
     // construtor
-    /**
-     * 
-     */
     public TodoList() {
         // Configuração da janela principal
         super("Tratamento");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         // definição de tamanho da janela
-        this.setSize(400, 300);
+        this.setSize(450, 400);
         // Inicializa o painel principal
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
@@ -67,46 +65,98 @@ public class TodoList extends JFrame {
         this.add(mainPanel);
         // Configuração de Listener para os Eventos
 
-        // tratamento do evento
+           // Tratamento de evento para limpar tarefas concluídas
+        clearCompletedButton.addActionListener(e -> {
+            clearCompletedTasks();
+        });
+           // Tratamento de evento para excluir
         deleteButton.addActionListener(e -> {
             deleteTask();
         });
-
-        addButton.addActionListener(e -> {
-           addTask();
+         // Tratamento de evento para adicionar tarefa
+        addButton.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+             String taskDescription = taskInputField.getText().trim(); // remove espaços vazios
+        if (!taskDescription.isEmpty()) {
+            Task newTask = new Task(taskDescription);
+            tasks.add(newTask);
+            updateTaskList();
+            taskInputField.setText("");
+            // Ação a ser executada quando o botão é clicado
+                JOptionPane.showMessageDialog(null, "Item adicionado!");
+        }
+                
+            }
         });
+
+        // addButton.addActionListener(e -> {
+        //    addTask();
+        // });
         
         markDoneButton.addActionListener(e -> {
           markTaskDone();
+         
         });
         filterComboBox.addActionListener(e -> {
           filterTasks();
         });
-
-        deleteButton.addKeyListener(new KeyListener() {
+// Tratamento de evento de teclado para o campo de entrada de tarefa
+        taskList.addKeyListener(new KeyAdapter() {
+            @Override
             public void keyPressed(KeyEvent e) {
-                
-            }
-
-            @Override
-            public void keyTyped(KeyEvent e) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'keyTyped'");
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'keyReleased'");
+                if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+                    deleteTask();
+                }
             }
         });
-            
-       
+
+        // Tratamento de evento de teclado para o campo de entrada de tarefa
+        taskInputField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    addTask();
+                }
+            }
+        });
+    
+        // Tratamento de evento de fechamento da janela
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int option = JOptionPane.showConfirmDialog(null, "Deseja realmente fechar a aplicação?", "Fechar Aplicação", JOptionPane.YES_NO_OPTION);
+                if (option == JOptionPane.YES_OPTION) {
+                    dispose(); // Fecha a janela
+                }
+            }
+        });
+        
+    
        
     }
 
-    // métodos para o CRUD
+   
+   // métodos para o CRUD
+ private void markTaskDone() {
+        // Marca a task selecionada como concluída
+        int selectedIndex = taskList.getSelectedIndex();
+        if (selectedIndex >= 0 && selectedIndex < tasks.size()) {
 
+        int escolha = JOptionPane.showConfirmDialog(null, "Deseja continuar?", "Confirmação",
+                JOptionPane.YES_NO_OPTION);
+
+        if (escolha == JOptionPane.YES_OPTION) {
+            if (selectedIndex >= 0 && selectedIndex < tasks.size()) {
+                Task task = tasks.get(selectedIndex);
+                task.setDone(true);
+                updateTaskList();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "OK!");
+        }}
+
+    }
+    
     private void addTask() {
         // Adiciona uma nova task à lista de tasks
         String taskDescription = taskInputField.getText().trim(); // remove espaços vazios
@@ -127,16 +177,7 @@ public class TodoList extends JFrame {
         }
     }
 
-    private void markTaskDone() {
-        // Marca a task selecionada como concluída
-        int selectedIndex = taskList.getSelectedIndex();
-        if (selectedIndex >= 0 && selectedIndex < tasks.size()) {
-            Task task = tasks.get(selectedIndex);
-            task.setDone(true);
-            updateTaskList();
-        }
-    }
-
+   
     private void filterTasks() {
         // Filtra as tasks com base na seleção do JComboBox
         String filter = (String) filterComboBox.getSelectedItem();
