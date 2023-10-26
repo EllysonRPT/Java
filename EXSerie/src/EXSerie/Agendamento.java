@@ -12,23 +12,29 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CadastroUsuarios extends JPanel{
+public class Agendamento extends JPanel {
+    private JTextField inputData;
+    private JTextField inputHora;
     private JTextField inputNome;
-    private JTextField inputIdade;
+    private JTextField inputDesc;
     private DefaultTableModel tableModel;
     private JTable table;
 
-    private List<Usuario> usuarios = new ArrayList<>();
+    private List<Agendamento> agenda = new ArrayList<>();
     private int linhaSelecionada = -1;
 
-    public CadastroUsuarios() {
+    public Agendamento() {
         tableModel = new DefaultTableModel();
+        tableModel.addColumn("Data");
+        tableModel.addColumn("Hora");
         tableModel.addColumn("Nome");
-        tableModel.addColumn("Idade");
+        tableModel.addColumn("Descricao");
         table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
+        inputData = new JTextField(10);
+        inputHora = new JTextField(5);
         inputNome = new JTextField(20);
-        inputIdade = new JTextField(5);
+        inputDesc = new JTextField(20);
         // criar botões
         JButton cadastrarButton = new JButton("Cadastrar");
         JButton atualizarButton = new JButton("Atualizar");
@@ -37,10 +43,14 @@ public class CadastroUsuarios extends JPanel{
         JButton salvarButton = new JButton("Salvar");
         JPanel inputPanel = new JPanel();
         // adicionar botões
+        inputPanel.add(new JLabel("Data:"));
+        inputPanel.add(inputData);
+        inputPanel.add(new JLabel("Hora:"));
+        inputPanel.add(inputHora);
         inputPanel.add(new JLabel("Nome:"));
         inputPanel.add(inputNome);
-        inputPanel.add(new JLabel("Idade:"));
-        inputPanel.add(inputIdade);
+        inputPanel.add(new JLabel("Descricao:"));
+        inputPanel.add(inputDesc);
         inputPanel.add(cadastrarButton);
         inputPanel.add(atualizarButton);
         inputPanel.add(apagarButton);
@@ -51,9 +61,9 @@ public class CadastroUsuarios extends JPanel{
         add(inputPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
 
-        File arquivo = new File("dados.txt");
-        if (arquivo.exists()) {
-            usuarios = Serializacao.deserializar("dados.txt");
+        File arquivo1 = new File("dados.txt");
+        if (arquivo1.exists()) {
+            agenda = Serializacao.deserializar("dados.txt");
             atualizarTabela();
         }
         table.addMouseListener(new MouseAdapter() {
@@ -62,26 +72,33 @@ public class CadastroUsuarios extends JPanel{
                 linhaSelecionada = table.rowAtPoint(evt.getPoint());
                 if (linhaSelecionada != -1) {
                     inputNome.setText((String) table.getValueAt(linhaSelecionada, 0));
-                    inputIdade.setText(table.getValueAt(linhaSelecionada, 1).toString());
-
+                    inputDesc.setText((String) table.getValueAt(linhaSelecionada, 0));
+                    inputData.setText((String) table.getValueAt(linhaSelecionada, 0));
+                    inputHora.setText((String) table.getValueAt(linhaSelecionada, 0));
+                    
                 }
             }
         });
-        OperacoesUsuarios operacoes = new OperacoesUsuarios(usuarios, tableModel, table);
+        OperacoesUsuarios operacoes = new OperacoesUsuarios(agenda, tableModel, table);
         cadastrarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                operacoes.cadastrarUsuario(inputNome.getText(), inputIdade.getText());
+                operacoes.cadastrarUsuario(inputData.getText(), inputHora.getText(), inputNome.getText(),
+                        inputDesc.getText());
+                inputData.setText("");
+                inputHora.setText("");
+                inputDesc.setText("");
                 inputNome.setText("");
-                inputIdade.setText("");
             }
         });
         atualizarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                operacoes.atualizarUsuario(linhaSelecionada, inputNome.getText(),
+                operacoes.atualizarUsuario(linhaSelecionada, inputData.getText(),
 
-                        inputIdade.getText());
+                        inputHora.getText(), 
+                        inputNome.getText(), 
+                        inputDesc.getText());
 
             }
         });
@@ -105,12 +122,14 @@ public class CadastroUsuarios extends JPanel{
         });
     }
 
+    /**
+     * 
+     */
     private void atualizarTabela() {
         tableModel.setRowCount(0);
-        for (Usuario usuario : usuarios) {
-            tableModel.addRow(new Object[] { usuario.getNome(), usuario.getIdade() });
+        for (Agendamento usuario : agenda) {
+            tableModel.addRow(new Object[] { ((Object) usuario).getData(), usuario.getHora(), usuario.getNome(), usuario.getDesc() });
         }
     }
 
-     
 }

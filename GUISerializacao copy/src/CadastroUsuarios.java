@@ -1,5 +1,3 @@
-package EXSerie;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -8,11 +6,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CadastroUsuarios extends JPanel{
+public class CadastroUsuarios extends JPanel {
     private JTextField inputNome;
     private JTextField inputIdade;
     private DefaultTableModel tableModel;
@@ -22,6 +19,7 @@ public class CadastroUsuarios extends JPanel{
     private int linhaSelecionada = -1;
 
     public CadastroUsuarios() {
+        
         tableModel = new DefaultTableModel();
         tableModel.addColumn("Nome");
         tableModel.addColumn("Idade");
@@ -29,14 +27,12 @@ public class CadastroUsuarios extends JPanel{
         JScrollPane scrollPane = new JScrollPane(table);
         inputNome = new JTextField(20);
         inputIdade = new JTextField(5);
-        // criar botões
         JButton cadastrarButton = new JButton("Cadastrar");
         JButton atualizarButton = new JButton("Atualizar");
         JButton apagarButton = new JButton("Apagar");
         JButton apagarTodosButton = new JButton("Apagar Todos");
         JButton salvarButton = new JButton("Salvar");
         JPanel inputPanel = new JPanel();
-        // adicionar botões
         inputPanel.add(new JLabel("Nome:"));
         inputPanel.add(inputNome);
         inputPanel.add(new JLabel("Idade:"));
@@ -46,16 +42,16 @@ public class CadastroUsuarios extends JPanel{
         inputPanel.add(apagarButton);
         inputPanel.add(apagarTodosButton);
         inputPanel.add(salvarButton);
-        // set do layout
         setLayout(new BorderLayout());
         add(inputPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
-
+        //deserialização quando abre o app
         File arquivo = new File("dados.txt");
         if (arquivo.exists()) {
             usuarios = Serializacao.deserializar("dados.txt");
             atualizarTabela();
         }
+        //tratamentos de eventos
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
@@ -112,5 +108,4 @@ public class CadastroUsuarios extends JPanel{
         }
     }
 
-     
 }

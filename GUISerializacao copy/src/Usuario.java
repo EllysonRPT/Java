@@ -1,17 +1,14 @@
-package EXSerie;
-
 import java.io.Serializable;
 
 public class Usuario implements Serializable {
     //atributos
-    String nome ;
+    String nome;
     int idade;
-    
+    //métodos
     public Usuario(String nome, int idade) {
         this.nome = nome;
         this.idade = idade;
     }
-    
     public String getNome() {
         return nome;
     }
@@ -24,18 +21,5 @@ public class Usuario implements Serializable {
     public void setIdade(int idade) {
         this.idade = idade;
     }
-
-    public Object getData() {
-        return null;
-    }
-
-    public Object getHora() {
-        return null;
-    }
-
-    public Object getDesc() {
-        return null;
-    }
-    
     
 }
