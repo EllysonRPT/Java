@@ -8,6 +8,7 @@ import java.awt.event.*;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -16,14 +17,19 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import Connection.CarrosDAO;
+import Connection.ClientesDAO;
 import Connection.VendasDAO;
 import Controller.VendasControl;
+import Model.Carros;
+import Model.Clientes;
 import Model.Vendas;
 
 public class VendasPainel extends JPanel {
     // Atributos (componentes)
     private JButton cadastrar, apagar, editar;
-    private JTextField carrosField, clienteField, valorVendaField;
+    private JComboBox<String> carrosComboBox, clienteComboBox; // Adicionado JComboBox
+    private JTextField valorVendaField;
     private List<Vendas> vendas;
     private JTable table;
     private DefaultTableModel tableModel;
@@ -37,16 +43,36 @@ public class VendasPainel extends JPanel {
         add(new JLabel("Cadastro Vendas"));
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridLayout(3, 2));
+        
+        // Adicionado JComboBox para "Carros"
         inputPanel.add(new JLabel("Carros"));
-        carrosField = new JTextField(20);
-        inputPanel.add(carrosField);
+        carrosComboBox = new JComboBox<>();
+        carrosComboBox.addItem("Selecione o Carro");
+        List<Carros> carros = new CarrosDAO().listarTodos();
+        for (Carros carro : carros) {
+            carrosComboBox.addItem(carro.getMarca()
+                    + " " + carro.getModelo()
+                    + " " + carro.getPlaca());
+        }
+        inputPanel.add(carrosComboBox);
+
+        // Adicionado JComboBox para "Cliente"
         inputPanel.add(new JLabel("Cliente"));
-        clienteField = new JTextField(20);
-        inputPanel.add(clienteField);
+        clienteComboBox = new JComboBox<>();
+        clienteComboBox.addItem("Selecione o Cliente");
+        // Preencha o JComboBox com os clientes
+        List<Clientes> clientes = new ClientesDAO().listarTodos();
+        for (Clientes cliente : clientes) {
+            clienteComboBox.addItem(cliente.getCpf() + " " + cliente.getNome());
+        }
+        inputPanel.add(clienteComboBox);
+        
+        // Adicionadas outras textfields
         inputPanel.add(new JLabel("Valor da Venda"));
         valorVendaField = new JTextField(20);
         inputPanel.add(valorVendaField);
         add(inputPanel);
+
         JPanel botoes = new JPanel();
         botoes.add(cadastrar = new JButton("Cadastrar"));
         botoes.add(editar = new JButton("Editar"));
@@ -71,8 +97,16 @@ public class VendasPainel extends JPanel {
             public void mouseClicked(MouseEvent evt) {
                 linhaSelecionada = table.rowAtPoint(evt.getPoint());
                 if (linhaSelecionada != -1) {
-                    carrosField.setText((String) table.getValueAt(linhaSelecionada, 0));
-                    clienteField.setText((String) table.getValueAt(linhaSelecionada, 1));
+                    // Extrai os valores de Carros, Cliente e Valor da Venda da linha selecionada
+                    String carrosClienteValor = (String) table.getValueAt(linhaSelecionada, 0);
+                    
+                    // Divide a string em partes usando espaço como delimitador
+                    String[] partes = carrosClienteValor.split(" ");
+                    
+                    // Define os valores nos JComboBox correspondentes
+                    carrosComboBox.setSelectedItem(partes[0] + " " + partes[1] + " " + partes[2]);
+                    clienteComboBox.setSelectedItem(partes[3] + " " + partes[4]);
+                    
                     valorVendaField.setText((String) table.getValueAt(linhaSelecionada, 2));
                 }
             }
@@ -86,12 +120,16 @@ public class VendasPainel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    // Obtém os valores selecionados nos JComboBox
+                    String carrosSelecionado = carrosComboBox.getSelectedItem().toString();
+                    String clienteSelecionado = clienteComboBox.getSelectedItem().toString();
+                    
                     // Chama o método "cadastrar" do objeto operacoes com os valores dos
                     // campos de entrada
-                    operacoes.cadastrar(carrosField.getText(), clienteField.getText(), valorVendaField.getText());
+                    operacoes.cadastrar(carrosSelecionado, clienteSelecionado, valorVendaField.getText());
                     // Limpa os campos de entrada após a operação de cadastro
-                    carrosField.setText("");
-                    clienteField.setText("");
+                    carrosComboBox.setSelectedIndex(0);
+                    clienteComboBox.setSelectedIndex(0);
                     valorVendaField.setText("");
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(VendasPainel.this, "Erro ao cadastrar: O Valor da Venda deve ser numérico.",
@@ -112,12 +150,16 @@ public class VendasPainel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    // Obtém os valores selecionados nos JComboBox
+                    String carrosSelecionado = carrosComboBox.getSelectedItem().toString();
+                    String clienteSelecionado = clienteComboBox.getSelectedItem().toString();
+                    
                     // Chama o método "atualizar" do objeto operacoes com os valores dos
                     // campos de entrada
-                    operacoes.atualizar(carrosField.getText(), clienteField.getText(), valorVendaField.getText());
+                    operacoes.atualizar(carrosSelecionado, clienteSelecionado, valorVendaField.getText());
                     // Limpa os campos de entrada após a operação de atualização
-                    carrosField.setText("");
-                    clienteField.setText("");
+                    carrosComboBox.setSelectedIndex(0);
+                    clienteComboBox.setSelectedIndex(0);
                     valorVendaField.setText("");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(VendasPainel.this,
@@ -137,10 +179,10 @@ public class VendasPainel extends JPanel {
                     // Chama o método "apagar" do objeto operacoes com o valor do campo de
                     // entrada "carros"
                     if (escolha == JOptionPane.YES_OPTION) {
-                        operacoes.apagar(carrosField.getText());
+                        operacoes.apagar(carrosComboBox.getSelectedItem().toString());
                         // Limpa os campos de entrada após a operação de exclusão
-                        carrosField.setText("");
-                        clienteField.setText("");
+                        carrosComboBox.setSelectedIndex(0);
+                        clienteComboBox.setSelectedIndex(0);
                         valorVendaField.setText("");
                     } else {
                         JOptionPane.showMessageDialog(null, "Operação Cancelada!");
