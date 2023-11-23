@@ -78,6 +78,15 @@ public class ClientePainel extends JPanel {
         // Configura a ação do botão "cadastrar" para adicionar um novo registro no
         // banco
         // de dados
+
+        /////////////
+
+
+
+
+
+
+        
         cadastrar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

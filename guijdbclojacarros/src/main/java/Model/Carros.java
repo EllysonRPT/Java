@@ -58,6 +58,10 @@ public class Carros {
         this.valor = valor;
     }
 
+    public static Object getCarrosComboModel() {
+        return null;
+    }
+
     
     
 }

@@ -36,6 +36,9 @@ public class VendasPainel extends JPanel {
     private int linhaSelecionada = -1;
 
     // Construtor (GUI-JPanel)
+    /**
+     * 
+     */
     public VendasPainel() {
         super();
         // entrada de dados
@@ -90,6 +93,18 @@ public class VendasPainel extends JPanel {
         new VendasDAO().criaTabela();
         // atualizar tabela
         atualizarTabela();
+
+        // Dentro do construtor de VendasPainel
+
+// Adicionado JComboBox para "Carros"
+inputPanel.add(new JLabel("Carros"));
+carrosComboBox = new JComboBox<>(Carros.getCarrosComboModel());
+inputPanel.add(carrosComboBox);
+
+// Adicionado JComboBox para "Cliente"
+inputPanel.add(new JLabel("Cliente"));
+clienteComboBox = new JComboBox<>(Clientes.getClientesComboModel());
+inputPanel.add(clienteComboBox);
 
         // tratamento de eventos construtor
         table.addMouseListener(new MouseAdapter() {
@@ -194,6 +209,7 @@ public class VendasPainel extends JPanel {
                 }
             }
         });
+        
     }
 
     // Método para atualizar a tabela de exibição com dados do banco de dados
@@ -206,4 +222,5 @@ public class VendasPainel extends JPanel {
             tableModel.addRow(new Object[] { venda.getCarros(), venda.getCliente(), venda.getValorVenda() });
         }
     }
+    
 }

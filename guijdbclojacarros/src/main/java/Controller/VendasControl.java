@@ -58,4 +58,6 @@ public class VendasControl {
         // Chama o método de exclusão no banco de dados
         atualizarTabela(); // Atualiza a tabela de exibição após a exclusão
     }
+
+    
 }

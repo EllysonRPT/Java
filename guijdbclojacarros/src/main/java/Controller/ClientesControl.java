@@ -2,6 +2,7 @@ package Controller;
 
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -24,7 +25,8 @@ public class ClientesControl {
         this.tableModel = tableModel;
         this.table = table;
     }
-
+    ////////
+    
     // métodos CRUD
 
     // Método para atualizar a tabela de exibição com dados do banco de dados

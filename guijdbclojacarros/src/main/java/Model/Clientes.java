@@ -27,4 +27,8 @@ public class Clientes {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    public static Object getClientesComboModel() {
+        return null;
+    }
 }

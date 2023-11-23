@@ -2,6 +2,7 @@ package Controller;
 
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -26,7 +27,22 @@ public class CarrosControl {
         this.table = table;
     }
     // metodos CRUD
+//////////////
 
+    public static DefaultComboBoxModel<String> getCarrosComboModel() {
+        DefaultComboBoxModel<String> comboModel = new DefaultComboBoxModel<>();
+        comboModel.addElement("Selecione o Carro");
+
+        List<Carros> carros = new CarrosDAO().listarTodos();
+        for (Carros carro : carros) {
+            comboModel.addElement(carro.getMarca() + " " + carro.getModelo() + " " + carro.getPlaca());
+        }
+
+        return comboModel;
+    }
+
+
+    
     // Método para atualizar a tabela de exibição com dados do banco de dados
     private void atualizarTabela() {
         tableModel.setRowCount(0); // Limpa todas as linhas existentes na tabela
