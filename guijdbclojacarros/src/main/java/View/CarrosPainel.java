@@ -1,27 +1,29 @@
 package View;
 
-import java.util.List;
+import java.awt.event.*;
+import java.sql.SQLException; // Adicione esta linha
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.*;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import java.util.List;
+import java.awt.event.*;
 import javax.swing.table.DefaultTableModel;
 
+import Connection.CarrosDAO;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
 import Controller.CarrosControl;
-import Controller.CarrosDAO;
+
+import javax.swing.*;
+
 import Model.Carros;
 
-// Atributos(componentes)
 public class CarrosPainel extends JPanel {
+    // Atributos(componentes)
     private JButton cadastrar, apagar, editar;
     private JTextField carMarcaField, carModeloField, carAnoField, carPlacaField, carValorField;
     private List<Carros> carros;
@@ -32,154 +34,144 @@ public class CarrosPainel extends JPanel {
     // Construtor(GUI-JPanel)
     public CarrosPainel() {
         super();
-       // entrada de dados
-setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-add(new JLabel("Cadastro Carros"));
-JPanel inputPanel = new JPanel();
-inputPanel.setLayout(new GridLayout(5, 2));
-inputPanel.add(new JLabel("Marca"));
-carMarcaField = new JTextField(20);
-inputPanel.add(carMarcaField);
-inputPanel.add(new JLabel("Modelo"));
-carModeloField = new JTextField(20);
-inputPanel.add(carModeloField);
-inputPanel.add(new JLabel("Ano"));
-carAnoField = new JTextField(20);
-inputPanel.add(carAnoField);
-inputPanel.add(new JLabel("Placa"));
+        // entrada de dados
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        add(new JLabel("Cadastro Carros"));
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new GridLayout(5, 2));
+        inputPanel.add(new JLabel("Marca"));
+        carMarcaField = new JTextField(20);
+        inputPanel.add(carMarcaField);
+        inputPanel.add(new JLabel("Modelo"));
+        carModeloField = new JTextField(20);
+        inputPanel.add(carModeloField);
+        inputPanel.add(new JLabel("Ano"));
+        carAnoField = new JTextField(20);
+        inputPanel.add(carAnoField);
+        inputPanel.add(new JLabel("Placa"));
+        carPlacaField = new JTextField(20);
+        inputPanel.add(carPlacaField);
+        inputPanel.add(new JLabel("Valor"));
+        carValorField = new JTextField(20);
+        inputPanel.add(carValorField);
+        add(inputPanel);
+        JPanel botoes = new JPanel();
+        botoes.add(cadastrar = new JButton("Cadastrar"));
+        botoes.add(editar = new JButton("Editar"));
+        botoes.add(apagar = new JButton("Apagar"));
+        add(botoes);
+        // tabela de carros
+        JScrollPane jSPane = new JScrollPane();
+        add(jSPane);
+        tableModel = new DefaultTableModel(new Object[][] {},
+                new String[] { "Marca", "Modelo", "Ano", "Placa", "Valor" });
+        table = new JTable(tableModel);
+        jSPane.setViewportView(table);
 
-carPlacaField = new JTextField(20);
-inputPanel.add(carPlacaField);
-inputPanel.add(new JLabel("Valor"));
-carValorField = new JTextField(20);
-inputPanel.add(carValorField);
-add(inputPanel);
-JPanel botoes = new JPanel();
-botoes.add(cadastrar = new JButton("Cadastrar"));
-botoes.add(editar = new JButton("Editar"));
-botoes.add(apagar = new JButton("Apagar"));
-
-add(botoes);
-// tabela de carros
-JScrollPane jSPane = new JScrollPane();
-add(jSPane);
-tableModel = new DefaultTableModel(new Object[][] {},
-new String[] { "Marca", "Modelo", "Ano", "Placa", "Valor" });
-table = new JTable(tableModel);
-jSPane.setViewportView(table);
-
-        // Cria o banco de dados caso não tenha sido criado
+        // criar BD
         new CarrosDAO().criaTabela();
-        // incluindo elementos do banco na criação do painel
+        // atualizar tabela
         atualizarTabela();
-        // tratamenro
+
+        // tratamento de eventos contrutor
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
-            linhaSelecionada = table.rowAtPoint(evt.getPoint());
-            if (linhaSelecionada != -1) {
-            carMarcaField.setText((String) table.getValueAt(linhaSelecionada, 0));
-            carModeloField.setText((String) table.getValueAt(linhaSelecionada, 1));
-            carAnoField.setText((String) table.getValueAt(linhaSelecionada, 2));
-            carPlacaField.setText((String) table.getValueAt(linhaSelecionada, 3));
-            carValorField.setText((String) table.getValueAt(linhaSelecionada, 4));
+                linhaSelecionada = table.rowAtPoint(evt.getPoint());
+                if (linhaSelecionada != -1) {
+                    carMarcaField.setText((String) table.getValueAt(linhaSelecionada, 0));
+                    carModeloField.setText((String) table.getValueAt(linhaSelecionada, 1));
+                    carAnoField.setText((String) table.getValueAt(linhaSelecionada, 2));
+                    carPlacaField.setText((String) table.getValueAt(linhaSelecionada, 3));
+                    carValorField.setText((String) table.getValueAt(linhaSelecionada, 4));
+                }
             }
-        }      
-    } );
-CarrosControl operacoes = new CarrosControl(carros, tableModel, table);
-   cadastrar.addActionListener(e -> {
-            String marca = carMarcaField.getText();
-            String modelo = carModeloField.getText();
-            String ano = carAnoField.getText();
-            String valor = carValorField.getText();
-            String placa = carPlacaField.getText();
+        });
+
+        CarrosControl operacoes = new CarrosControl(carros, tableModel, table);
+        // Configura a ação do botão "cadastrar" para adicionar um novo registro no
+        // banco
+        // de dados
+        cadastrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                try {
+                    // Chama o método "cadastrar" do objeto operacoes com os valores dos
+                    // campos de entrada
+                    operacoes.cadastrar(carMarcaField.getText(), carModeloField.getText(),
+                            carAnoField.getText(), carPlacaField.getText(), carValorField.getText());
+                    // Limpa os campos de entrada após a operação de cadastro
+                    carMarcaField.setText("");
+                    carModeloField.setText("");
+                    carAnoField.setText("");
+                    carPlacaField.setText("");
+                    carValorField.setText("");
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(CarrosPainel.this, "Erro ao cadastrar: O ano deve ser numérico.",
+                            "Erro", JOptionPane.ERROR_MESSAGE);
+                } catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(CarrosPainel.this, "Erro ao cadastrar: " + ex.getMessage(), "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    ex.printStackTrace(); // Adicione um tratamento adequado para a exceção
+                    JOptionPane.showMessageDialog(CarrosPainel.this, "Erro ao cadastrar: " + ex.getMessage(), "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+      // Configura a ação do botão "editar" para atualizar um registro no banco de dados
+      editar.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                // Chama o método "atualizar" do objeto operacoes com os valores dos
+                // campos de entrada
+                operacoes.atualizar(carMarcaField.getText(), carModeloField.getText(),
+                        carAnoField.getText(), carPlacaField.getText(), carValorField.getText());
+                // Limpa os campos de entrada após a operação de atualização
+                carMarcaField.setText("");
+                carModeloField.setText("");
+                carAnoField.setText("");
+                carPlacaField.setText("");
+                carValorField.setText("");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(CarrosPainel.this, "Erro ao atualizar dados no banco de dados: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    });
+    
 
 
-     if (placa.matches("\\d+") && placa.matches("[a-zA-Z]+")) {
-                 JOptionPane.showMessageDialog(CarrosPainel.this, "Erro ao cadastrar: Deve ter numero e letra",
-                        "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-            // Verifica se ano contém apenas números
-            else if (!ano.matches("\\d+")) {
-                // Trate o erro de ano inválido aqui (pode exibir uma mensagem de erro, por
-                // exemplo)
-                JOptionPane.showMessageDialog(CarrosPainel.this, "Erro ao cadastrar: O ano deve ser numérico.",
-                        "Erro", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-       // Verifica se modelo e marca contêm apenas letras
-            else  if (!marca.matches("[a-zA-Z]+") || !modelo.matches("[a-zA-Z]+")) {
-                // Trate o erro de marca ou modelo inválido aqui
-                 JOptionPane.showMessageDialog(CarrosPainel.this, "Erro ao cadastrar: a marca ou o modelo nao deve ser numérico.",
-                        "Erro", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            // Verifica se valor contém apenas números
-            else if (!valor.matches("\\d+")) {
-                // Trate o erro de valor inválido aqui
-                  JOptionPane.showMessageDialog(CarrosPainel.this, "Erro ao cadastrar: O valor deve ser numérico.",
-                        "Erro", JOptionPane.ERROR_MESSAGE);
-                return;
-            }        
-               carMarcaField.setText("");
-        carModeloField.setText("");
-        carAnoField.setText("");
-        carValorField.setText("");
-        carPlacaField.setText("");
-       });  
 
+        // Configura a ação do botão "apagar" para excluir um registro no banco de dados
+        apagar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                int escolha = JOptionPane.showConfirmDialog(null, "Deseja Apagar?", "Confirmação",
+                JOptionPane.YES_NO_OPTION);
+                // Chama o método "apagar" do objeto operacoes com o valor do campo de
 
-    editar.addActionListener(e -> {
-            String marca = carMarcaField.getText();
-            String modelo = carModeloField.getText();
-            String ano = carAnoField.getText();
-            String valor = carValorField.getText();
-            String placa = carPlacaField.getText();
+                // entrada "placa"
+              if (escolha == JOptionPane.YES_OPTION ) {
+                   operacoes.apagar(carPlacaField.getText());
+                // Limpa os campos de entrada após a operação de exclusão
+                carMarcaField.setText("");
+                carModeloField.setText("");
+                carAnoField.setText("");
+                carPlacaField.setText("");
+                carValorField.setText("");
+            }else {
+            JOptionPane.showMessageDialog(null, "OK!");
+        }
+              }
+             
+        });
 
-              if (placa.matches("\\d+") && placa.matches("[a-zA-Z]+")) {
-                 JOptionPane.showMessageDialog(CarrosPainel.this, "Erro ao cadastrar: Deve ter numero e letra",
-                        "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-            // Verifica se ano contém apenas números
-           else if (!ano.matches("\\d+")) {
-                // Trate o erro de ano inválido aqui (pode exibir uma mensagem de erro, por
-                // exemplo)
-                JOptionPane.showMessageDialog(CarrosPainel.this, "Erro ao cadastrar: O ano deve ser numérico.",
-                        "Erro", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-       // Verifica se modelo e marca contêm apenas letras
-            else if (!marca.matches("[a-zA-Z]+") || !modelo.matches("[a-zA-Z]+")) {
-                // Trate o erro de marca ou modelo inválido aqui
-                 JOptionPane.showMessageDialog(CarrosPainel.this, "Erro ao cadastrar:a marca ou o modelo nao deve ser numérico.",
-                        "Erro", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            // Verifica se valor contém apenas números
-            else if (!valor.matches("\\d+")) {
-                // Trate o erro de valor inválido aqui
-                  JOptionPane.showMessageDialog(CarrosPainel.this, "Erro ao cadastrar: O valor deve ser numérico.",
-                        "Erro", JOptionPane.ERROR_MESSAGE);
-                return;
-            }  
-            carMarcaField.setText("");
-        carModeloField.setText("");
-        carAnoField.setText("");
-        carValorField.setText("");
-        carPlacaField.setText("");    
-       });  
-   apagar.addActionListener(e->{
-        operacoes.apagar(carPlacaField.getText());
-        carMarcaField.setText("");
-        carModeloField.setText("");
-        carAnoField.setText("");
-        carValorField.setText("");
-        carPlacaField.setText("");
-    });        
-       
     }
 
-    // metodo
     // Método para atualizar a tabela de exibição com dados do banco de dados
     private void atualizarTabela() {
         tableModel.setRowCount(0); // Limpa todas as linhas existentes na tabela
@@ -192,5 +184,6 @@ CarrosControl operacoes = new CarrosControl(carros, tableModel, table);
                     carro.getAno(), carro.getPlaca(), carro.getValor() });
         }
     }
+ 
 
 }
