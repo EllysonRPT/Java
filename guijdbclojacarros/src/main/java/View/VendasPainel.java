@@ -21,6 +21,7 @@ import Connection.CarrosDAO;
 import Connection.ClientesDAO;
 import Connection.VendasDAO;
 import Controller.VendasControl;
+
 import Model.Carros;
 import Model.Clientes;
 import Model.Vendas;
@@ -46,7 +47,7 @@ public class VendasPainel extends JPanel {
         add(new JLabel("Cadastro Vendas"));
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridLayout(3, 2));
-        
+
         // Adicionado JComboBox para "Carros"
         inputPanel.add(new JLabel("Carros"));
         carrosComboBox = new JComboBox<>();
@@ -69,7 +70,7 @@ public class VendasPainel extends JPanel {
             clienteComboBox.addItem(cliente.getCpf() + " " + cliente.getNome());
         }
         inputPanel.add(clienteComboBox);
-        
+
         // Adicionadas outras textfields
         inputPanel.add(new JLabel("Valor da Venda"));
         valorVendaField = new JTextField(20);
@@ -96,15 +97,15 @@ public class VendasPainel extends JPanel {
 
         // Dentro do construtor de VendasPainel
 
-// Adicionado JComboBox para "Carros"
-inputPanel.add(new JLabel("Carros"));
-carrosComboBox = new JComboBox<>(Carros.getCarrosComboModel());
-inputPanel.add(carrosComboBox);
+        // Adicionado JComboBox para "Carros"
+        inputPanel.add(new JLabel("Carros"));
+        carrosComboBox = new JComboBox<>(Carros.getCarrosComboModel());
+        inputPanel.add(carrosComboBox);
 
-// Adicionado JComboBox para "Cliente"
-inputPanel.add(new JLabel("Cliente"));
-clienteComboBox = new JComboBox<>(Clientes.getClientesComboModel());
-inputPanel.add(clienteComboBox);
+        // Adicionado JComboBox para "Cliente"
+        inputPanel.add(new JLabel("Cliente"));
+        clienteComboBox = new JComboBox<>(Clientes.getClientesComboModel());
+        inputPanel.add(clienteComboBox);
 
         // tratamento de eventos construtor
         table.addMouseListener(new MouseAdapter() {
@@ -114,14 +115,14 @@ inputPanel.add(clienteComboBox);
                 if (linhaSelecionada != -1) {
                     // Extrai os valores de Carros, Cliente e Valor da Venda da linha selecionada
                     String carrosClienteValor = (String) table.getValueAt(linhaSelecionada, 0);
-                    
+
                     // Divide a string em partes usando espaço como delimitador
                     String[] partes = carrosClienteValor.split(" ");
-                    
+
                     // Define os valores nos JComboBox correspondentes
                     carrosComboBox.setSelectedItem(partes[0] + " " + partes[1] + " " + partes[2]);
                     clienteComboBox.setSelectedItem(partes[3] + " " + partes[4]);
-                    
+
                     valorVendaField.setText((String) table.getValueAt(linhaSelecionada, 2));
                 }
             }
@@ -138,7 +139,7 @@ inputPanel.add(clienteComboBox);
                     // Obtém os valores selecionados nos JComboBox
                     String carrosSelecionado = carrosComboBox.getSelectedItem().toString();
                     String clienteSelecionado = clienteComboBox.getSelectedItem().toString();
-                    
+
                     // Chama o método "cadastrar" do objeto operacoes com os valores dos
                     // campos de entrada
                     operacoes.cadastrar(carrosSelecionado, clienteSelecionado, valorVendaField.getText());
@@ -147,7 +148,8 @@ inputPanel.add(clienteComboBox);
                     clienteComboBox.setSelectedIndex(0);
                     valorVendaField.setText("");
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(VendasPainel.this, "Erro ao cadastrar: O Valor da Venda deve ser numérico.",
+                    JOptionPane.showMessageDialog(VendasPainel.this,
+                            "Erro ao cadastrar: O Valor da Venda deve ser numérico.",
                             "Erro", JOptionPane.ERROR_MESSAGE);
                 } catch (IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(VendasPainel.this, "Erro ao cadastrar: " + ex.getMessage(), "Erro",
@@ -160,7 +162,8 @@ inputPanel.add(clienteComboBox);
             }
         });
 
-        // Configura a ação do botão "editar" para atualizar um registro no banco de dados
+        // Configura a ação do botão "editar" para atualizar um registro no banco de
+        // dados
         editar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -168,7 +171,7 @@ inputPanel.add(clienteComboBox);
                     // Obtém os valores selecionados nos JComboBox
                     String carrosSelecionado = carrosComboBox.getSelectedItem().toString();
                     String clienteSelecionado = clienteComboBox.getSelectedItem().toString();
-                    
+
                     // Chama o método "atualizar" do objeto operacoes com os valores dos
                     // campos de entrada
                     operacoes.atualizar(carrosSelecionado, clienteSelecionado, valorVendaField.getText());
@@ -209,7 +212,7 @@ inputPanel.add(clienteComboBox);
                 }
             }
         });
-        
+
     }
 
     // Método para atualizar a tabela de exibição com dados do banco de dados
@@ -222,5 +225,5 @@ inputPanel.add(clienteComboBox);
             tableModel.addRow(new Object[] { venda.getCarros(), venda.getCliente(), venda.getValorVenda() });
         }
     }
-    
+
 }
