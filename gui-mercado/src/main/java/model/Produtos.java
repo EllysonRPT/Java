@@ -1,17 +1,19 @@
-package model;
+package Model;
 
-public class Produto {
+public class Produtos {
 
     private int promocao;
     private int codBarra;
     private int quantiProduto;
     private String nomeProduto;
+    private int valor;
 
-    public Produto(int promocao, int codBarra, int quantiProduto, String nomeProduto) {
+    public Produtos(int promocao, int codBarra, int quantiProduto, String nomeProduto, int valor) {
         this.promocao = promocao;
         this.codBarra = codBarra;
         this.quantiProduto = quantiProduto;
         this.nomeProduto = nomeProduto;
+        this.valor = valor;
     }
 
     public int getPromocao() {
@@ -46,4 +48,27 @@ public class Produto {
         this.nomeProduto = nomeProduto;
     }
 
+    public int getValor() {
+        return valor;
+    }
+
+    public void setValor(int valor) {
+        this.valor = valor;
+    }
+
+    public String getMarca() {
+        return null;
+    }
+
+    public String getModelo() {
+        return null;
+    }
+
+    public String getPlaca() {
+        return null;
+    }
+
+    public Object getCpf() {
+        return null;
+    }
 }

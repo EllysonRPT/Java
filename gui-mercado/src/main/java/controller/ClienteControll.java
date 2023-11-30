@@ -1,4 +1,4 @@
-package controller;
+package Controller;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-
-import model.Clientes;
+import Model.Clientes;
+import app.Connection.ClientesDAO;
 
 /**
  * ClientesControl
@@ -41,21 +41,21 @@ public class ClienteControll {
     }
 
     // Método para cadastrar um novo cliente no banco de dados
-    public void cadastrar(String cpf, String nome) {
+    public void cadastrar(int cpf, String nome) {
         new ClientesDAO().cadastrar(cpf, nome);
         // Chama o método de cadastro no banco de dados
         atualizarTabela(); // Atualiza a tabela de exibição após o cadastro
     }
 
     // Método para atualizar os dados de um cliente no banco de dados
-    public void atualizar(String cpf, String nome) {
+    public void atualizar(int cpf, String nome) {
         new ClientesDAO().atualizar(cpf, nome);
         // Chama o método de atualização no banco de dados
         atualizarTabela(); // Atualiza a tabela de exibição após a atualização
     }
 
     // Método para apagar um cliente do banco de dados
-    public void apagar(String cpf) {
+    public void apagar(int cpf) {
         new ClientesDAO().apagar(cpf);
         // Chama o método de exclusão no banco de dados
         atualizarTabela(); // Atualiza a tabela de exibição após a exclusão

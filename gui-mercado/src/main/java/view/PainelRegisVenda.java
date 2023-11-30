@@ -1,8 +1,8 @@
-package view;
+// package View;
 
-import model.Produto;
+// import Model.Produtos;
 
-public class PainelRegisVenda {
+// public class PainelRegisVenda {
     
 
-}
+// }

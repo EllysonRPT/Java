@@ -13,11 +13,11 @@ import java.awt.event.*;
 
 //classe
 
-public class Frame extends JFrame {
+public class JanelaPrincipal extends JFrame {
     // criação do tabbedPane para incluir as tabs
     private JTabbedPane jTPane;
 
-    public Frame() {
+    public JanelaPrincipal() {
         jTPane = new JTabbedPane();
         add(jTPane);
         // criandos as tabs
@@ -25,11 +25,11 @@ public class Frame extends JFrame {
         
         Painelvendas tab1 = new Painelvendas();
        PainelEstoque tab2 = new PainelEstoque();
-       PainelRegisVenda tab3 = new PainelRegisVenda();
+    //    PainelRegisVenda tab3 = new PainelRegisVenda();
 
         jTPane.add("Venda", tab1);
         jTPane.add("Estoque", tab2);
-        jTPane.add("Registro", tab3);
+        // jTPane.add("Registro", tab3);
         setBounds(100, 100, 600, 600);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
