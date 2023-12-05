@@ -86,4 +86,10 @@ public class ProdutoControl {
 
     public void apagar(String text) {
     }
+
+    public void atualizar(String text, String text2, String text3, String text4, String text5) {
+    }
+
+    public void cadastrar(String text, String text2, String text3, String text4, String text5) {
+    }
 }
