@@ -8,28 +8,24 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import Model.Registro; // Assuming you have a 'Registro' class
+import Model.Produtos;
 
 /**
- * RegistroDAO
+ * ProdutosDAO
  */
-public class VendasDAO {
-    // atributo
+public class ProdutosDAO {
     private Connection connection;
-    private List<Registro> registros;
+    private List<Produtos> produtos;
 
-    // construtor
-    public VendasDAO() {
+    public ProdutosDAO() {
         this.connection = ConnectionFactory.getConnection();
     }
 
-    // criar Tabela
     public void criaTabela() {
-        String sql = "CREATE TABLE IF NOT EXISTS vendas_lojavendas (produtos VARCHAR(255), Cliente VARCHAR(255), ValorVenda VARCHAR(255))";
+        String sql = "CREATE TABLE IF NOT EXISTS produtos_lojaprodutos (COD_BARRA VARCHAR(255), QUANTI_PRODUTO VARCHAR(255), NOME_PRODUTO VARCHAR(255) PRIMARY KEY, VALOR VARCHAR(255))";
         try (Statement stmt = this.connection.createStatement()) {
             stmt.execute(sql);
             System.out.println("Tabela criada com sucesso.");
-
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao criar a tabela: " + e.getMessage(), e);
         } finally {
@@ -37,38 +33,36 @@ public class VendasDAO {
         }
     }
 
-    // Listar todos os valores cadastrados
-    public List<Registro> listarTodos() {
+    public List<Produtos> listarTodos() {
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        registros = new ArrayList<>();
+        produtos = new ArrayList<>();
         try {
-            stmt = connection.prepareStatement("SELECT * FROM vendas_lojavendas");
+            stmt = connection.prepareStatement("SELECT * FROM produtos_lojaprodutos WHERE cod_barra = ?");
             rs = stmt.executeQuery();
             while (rs.next()) {
-                Registro registro = new Registro(
-                        rs.getString("produtos"),
-                        rs.getString("Cliente"),
-                        rs.getString("ValorVenda"));
-                registros.add(registro);
+                Produtos produto = new Produtos(
+                        rs.getString("cod_barra"));
+                        
+                produtos.add(produto);
             }
         } catch (SQLException ex) {
             System.out.println(ex);
         } finally {
             ConnectionFactory.closeConnection(connection, stmt, rs);
         }
-        return registros;
+        return produtos;
     }
 
-    // Cadastrar Registro no banco
-    public void cadastrar(String produtos, String cliente, String valorVenda) {
+    public void cadastrar(String codBarra, String quantiProduto, String nomeProduto, String valor) {
         PreparedStatement stmt = null;
-        String sql = "INSERT StringO vendas_lojavendas (produtos, Cliente, ValorVenda) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO produtos_lojaprodutos (cod_barra, quanti_produto, nome_produto, valor) VALUES (?, ?, ?, ?)";
         try {
             stmt = connection.prepareStatement(sql);
-            stmt.setString(1, produtos);
-            stmt.setString(2, cliente);
-            stmt.setString(3, valorVenda);
+            stmt.setString(1, codBarra);
+            stmt.setString(2, quantiProduto);
+            stmt.setString(3, nomeProduto);
+            stmt.setString(4, valor);
             stmt.executeUpdate();
             System.out.println("Dados inseridos com sucesso");
         } catch (SQLException e) {
@@ -78,15 +72,15 @@ public class VendasDAO {
         }
     }
 
-    // Atualizar dados no banco
-    public void atualizar(String produtos, String cliente, String valorVenda) {
+    public void atualizar(String codBarra, String quantiProduto, String nomeProduto, String valor) {
         PreparedStatement stmt = null;
-        String sql = "UPDATE vendas_lojavendas SET Cliente = ?, ValorVenda = ? WHERE produtos = ?";
+        String sql = "UPDATE produtos_lojaprodutos SET cod_barra = ?, quanti_produto = ?, valor = ? WHERE nome_produto = ?";
         try {
             stmt = connection.prepareStatement(sql);
-            stmt.setString(1, cliente);
-            stmt.setString(2, valorVenda);
-            stmt.setString(3, produtos);
+            stmt.setString(1, codBarra);
+            stmt.setString(2, quantiProduto);
+            stmt.setString(3, valor);
+            stmt.setString(4, nomeProduto);
             stmt.executeUpdate();
             System.out.println("Dados atualizados com sucesso");
         } catch (SQLException e) {
@@ -96,13 +90,12 @@ public class VendasDAO {
         }
     }
 
-    // Apagar dados do banco
-    public void apagar(String produtos) {
+    public void apagar(String codBarra) {
         PreparedStatement stmt = null;
-        String sql = "DELETE FROM vendas_lojavendas WHERE produtos = ?";
+        String sql = "DELETE FROM produtos_lojaprodutos WHERE nome_produto = ?";
         try {
             stmt = connection.prepareStatement(sql);
-            stmt.setString(1, produtos);
+            stmt.setString(1, codBarra);
             stmt.executeUpdate();
             System.out.println("Dado apagado com sucesso");
         } catch (SQLException e) {

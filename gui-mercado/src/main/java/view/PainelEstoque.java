@@ -11,7 +11,7 @@ import app.Connection.ProdutosDAO;
 
 public class PainelEstoque extends JPanel {
 
-    private JTextField promocaoField;
+   
     private JTextField codigoField;
     private JTextField quantidadeField;
     private JTextField valorField;
@@ -25,7 +25,7 @@ public class PainelEstoque extends JPanel {
 
     public PainelEstoque() {
         // Initialize components
-        promocaoField = new JTextField(10);
+       
         codigoField = new JTextField(10);
         quantidadeField = new JTextField(10);
         valorField = new JTextField(10);
@@ -39,8 +39,7 @@ public class PainelEstoque extends JPanel {
         table = new JTable(tableModel);
 
         // Add components to the panel
-        add(new JLabel("Promoção:"));
-        add(promocaoField);
+        
         add(new JLabel("Código:"));
         add(codigoField);
         add(new JLabel("Quantidade:"));
@@ -61,9 +60,9 @@ public class PainelEstoque extends JPanel {
                 try {
                     ProdutoControl operacoes = new ProdutoControl(produtos, tableModel, table);
                     operacoes.cadastrar(
-                            Integer.parseInt(promocaoField.getText()),
-                            Integer.parseInt(codigoField.getText()),
-                            Integer.parseInt(quantidadeField.getText()),
+                           
+                            codigoField.getText(),
+                            quantidadeField.getText(),
                             valorField.getText(),
                             nomeProdutoField.getText()
                     );
@@ -87,9 +86,9 @@ public class PainelEstoque extends JPanel {
                 try {
                     ProdutoControl operacoes = new ProdutoControl(produtos, tableModel, table);
                     operacoes.atualizar(
-                            Integer.parseInt(promocaoField.getText()),
-                            Integer.parseInt(codigoField.getText()),
-                            Integer.parseInt(quantidadeField.getText()),
+                           
+                            codigoField.getText(),
+                            quantidadeField.getText(),
                             valorField.getText(),
                             nomeProdutoField.getText()
                     );
@@ -111,7 +110,7 @@ public class PainelEstoque extends JPanel {
                     int escolha = JOptionPane.showConfirmDialog(null, "Deseja Apagar?", "Confirmação",
                             JOptionPane.YES_NO_OPTION);
                     if (escolha == JOptionPane.YES_OPTION) {
-                        operacoes.apagar(Integer.parseInt(promocaoField.getText()));
+                        operacoes.apagar(valorField.getText());
                         limparCampos();
                         atualizarTabela();
                     } else {
@@ -127,7 +126,7 @@ public class PainelEstoque extends JPanel {
     }
 
     private void limparCampos() {
-        promocaoField.setText("");
+       
         codigoField.setText("");
         quantidadeField.setText("");
         valorField.setText("");
@@ -139,7 +138,6 @@ public class PainelEstoque extends JPanel {
         produtos = new ProdutosDAO().listarTodos();
         for (Produtos produto : produtos) {
             tableModel.addRow(new Object[]{
-                    produto.getPromocao(),
                     produto.getCodBarra(),
                     produto.getQuantiProduto(),
                     produto.getNomeProduto(),
