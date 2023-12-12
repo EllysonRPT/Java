@@ -37,9 +37,9 @@ public class ProdutoControl {
         DefaultComboBoxModel<String> comboModel = new DefaultComboBoxModel<>();
         comboModel.addElement("Selecione o Produto"); // Changed from Selecione o Carro to Selecione o Produto
 
-        List<Produtos> produtos = new ProdutosDAO().listarTodos(); // Changed from CarrosDAO to ProdutosDAO
+        List<Produtos> produtos = new ProdutosDAO().listarProduto(null); // Changed from CarrosDAO to ProdutosDAO
         for (Produtos produto : produtos) { // Changed from Carros to Produtos
-            comboModel.addElement(produto.getMarca() + " " + produto.getModelo() + " " + produto.getPlaca()); // Changed from carro to produto
+            comboModel.addElement(produto.getCodBarra() + " " + produto.getNomeProduto() + " " + produto.getQuantiProduto()+ produto.getValor()); // Changed from carro to produto
         }
 
         return comboModel;
@@ -49,7 +49,7 @@ public class ProdutoControl {
     private void atualizarTabela() {
 
         tableModel.setRowCount(0); // Limpa todas as linhas existentes na tabela
-        produtos = new ProdutosDAO().listarTodos(); // Changed from CarrosDAO to ProdutosDAO
+        produtos = new ProdutosDAO().listarProduto(null); // Changed from CarrosDAO to ProdutosDAO
         // Obtém os produtos atualizados do banco de dados
         for (Produtos produto : produtos) { // Changed from Carros to Produtos
             // Adiciona os dados de cada produto como uma nova linha na tabela Swing

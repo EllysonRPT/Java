@@ -8,7 +8,7 @@ public class Produtos {
     private String nomeProduto;
     private String valor;
 
-    public Produtos( String codBarra, String quantiProduto, String nomeProduto, String valor) {
+    public Produtos(String string, String string2, String string3, String string4) {
        
         this.codBarra = codBarra;
         this.quantiProduto = quantiProduto;
@@ -50,17 +50,6 @@ public class Produtos {
         this.valor = valor;
     }
 
-    public String getMarca() {
-        return null;
-    }
-
-    public String getModelo() {
-        return null;
-    }
-
-    public String getPlaca() {
-        return null;
-    }
 
     public Object getCpf() {
         return null;

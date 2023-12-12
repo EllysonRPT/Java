@@ -10,6 +10,7 @@ import Model.Clientes;
 import Model.Produtos;
 import app.Connection.ClientesDAO;
 import app.Connection.ProdutosDAO;
+import app.Connection.VendasDAO;
 
 public class PainelVendas extends JPanel {
 
@@ -32,6 +33,7 @@ public class PainelVendas extends JPanel {
         apagar = new JButton("Apagar");
         adicionar = new JButton("Adicionar");
         validar = new JButton("Validar");
+        JLabel clienteOk = new JLabel();
 
         tableModel = new DefaultTableModel();
         table = new JTable(tableModel);
@@ -45,28 +47,34 @@ public class PainelVendas extends JPanel {
         add(codigoField);
         add(adicionar);
         add(apagar);
+        add(clienteOk);
         add(new JScrollPane(table)); // Add a JScrollPane for the table
+
+        new VendasDAO().criaTabela();
+        new ClientesDAO().criaTabela();
 
         // Action listeners for buttons
 
         adicionar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String cpfDigitado = cpfField.getText();
-                List<Clientes> clientes = new ClientesDAO().listarClientes(cpfDigitado);
+                String codigo = codigoField.getText();
+                List<Produtos> produtos = new ProdutosDAO().listarProduto(codigo);
                 boolean encontrado = false;
-        
-                for (Clientes cliente : clientes) {
-                    if (cliente.getCpf().equals(cpfDigitado)) {
+
+                for (Produtos produto : produtos) {
+                    System.out.println(produto.getCodBarra());
+                    if (produto.getCodBarra().equals(codigo)) {
+                        
                         encontrado = true;
                         break;
                     }
                 }
-        
+
                 if (encontrado) {
-                    System.out.println("Validado");
+                    JOptionPane.showMessageDialog(null, "VALIDADO EU ACHO");
                 } else {
-                    System.out.println("Não encontrado");
+                    JOptionPane.showMessageDialog(null, "NAO FUNCIONOU EU ACHO");
                 }
             }
         });
@@ -77,22 +85,22 @@ public class PainelVendas extends JPanel {
                 String cpfDigitado = cpfField.getText();
                 List<Clientes> clientes = new ClientesDAO().listarClientes(cpfDigitado);
                 boolean encontrado = false;
-        
+
                 for (Clientes cliente : clientes) {
                     if (cliente.getCpf().equals(cpfDigitado)) {
                         encontrado = true;
+                        clienteOk.setText(cliente.getNome());
                         break;
                     }
                 }
-        
+
                 if (encontrado) {
-                    System.out.println("Validado");
+                    JOptionPane.showMessageDialog(null, "VALIDADO");
                 } else {
-                    System.out.println("Não encontrado");
+                    JOptionPane.showMessageDialog(null, "NAO VALIDADO");
                 }
             }
         });
-        
 
         apagar.addActionListener(new ActionListener() {
             @Override
@@ -125,7 +133,7 @@ public class PainelVendas extends JPanel {
 
     private void atualizarTabela() {
         tableModel.setRowCount(0);
-        produtos = new ProdutosDAO().listarTodos();
+        produtos = new ProdutosDAO().listarProduto(null);
         for (Produtos produto : produtos) {
             tableModel.addRow(new Object[] {
                     produto.getCodBarra(),

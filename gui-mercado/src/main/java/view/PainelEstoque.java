@@ -53,6 +53,8 @@ public class PainelEstoque extends JPanel {
         add(apagar);
         add(new JScrollPane(table));  // Add a JScrollPane for the table
 
+        new ProdutosDAO().criaTabela();
+
         // Action listeners for buttons
         cadastrar.addActionListener(new ActionListener() {
             @Override
@@ -135,7 +137,7 @@ public class PainelEstoque extends JPanel {
 
     private void atualizarTabela() {
         tableModel.setRowCount(0);
-        produtos = new ProdutosDAO().listarTodos();
+        produtos = new ProdutosDAO().listarProduto(null);
         for (Produtos produto : produtos) {
             tableModel.addRow(new Object[]{
                     produto.getCodBarra(),

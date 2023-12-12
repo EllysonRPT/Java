@@ -21,31 +21,32 @@ public class ProdutosDAO {
         this.connection = ConnectionFactory.getConnection();
     }
 
-    public void criaTabela() {
-        String sql = "CREATE TABLE IF NOT EXISTS produtos_lojaprodutos (COD_BARRA VARCHAR(255), QUANTI_PRODUTO VARCHAR(255), NOME_PRODUTO VARCHAR(255) PRIMARY KEY, VALOR VARCHAR(255))";
+       public void criaTabela() {
+        String sql = "CREATE TABLE IF NOT EXISTS produtos_lojaprodutos (COD_BARRA VARCHAR(255) PRIMARY KEY, QUANTI_PRODUTO VARCHAR(255), NOME_PRODUTO VARCHAR(255) , VALOR VARCHAR(255))";
         try (Statement stmt = this.connection.createStatement()) {
             stmt.execute(sql);
             System.out.println("Tabela criada com sucesso.");
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao criar a tabela: " + e.getMessage(), e);
-        } finally {
-            ConnectionFactory.closeConnection(this.connection);
         }
     }
 
-    public List<Produtos> listarTodos(String codigo) {
+    public List<Produtos> listarProduto(String codigo) {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         produtos = new ArrayList<>();
         try {
-            stmt = connection.prepareStatement("SELECT * FROM produtos_lojaprodutos WHERE codigo = ?");
-            rs = stmt.executeQuery();
+            stmt = connection.prepareStatement("SELECT * FROM produtos_lojaprodutos WHERE COD_BARRA = ?");
             stmt.setString(1, codigo);
+            rs = stmt.executeQuery();
             while (rs.next()) {
                 Produtos produto = new Produtos(
-                    
-                        );
-                        
+                        rs.getString("COD_BARRA"),
+                        rs.getString("QUANTI_PRODUTO"),
+                        rs.getString("NOME_PRODUTO"),
+                        rs.getString("VALOR")
+                );
+
                 produtos.add(produto);
             }
         } catch (SQLException ex) {
