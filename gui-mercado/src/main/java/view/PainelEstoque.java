@@ -110,7 +110,7 @@ public class PainelEstoque extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    EstoqueControl operacoes = new EstoqueControl(produtos, tableModel, table);
+                    EstoqueControl operacoes = new EstoqueControl();
                     int escolha = JOptionPane.showConfirmDialog(null, "Deseja Apagar?", "Confirmação",
                             JOptionPane.YES_NO_OPTION);
                     if (escolha == JOptionPane.YES_OPTION) {

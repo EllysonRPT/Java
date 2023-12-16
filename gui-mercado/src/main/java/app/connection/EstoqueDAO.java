@@ -21,7 +21,7 @@ public class EstoqueDAO {
         this.connection = ConnectionFactory.getConnection();
     }
 
-       public void criaTabela() {
+    public void criaTabela() {
         String sql = "CREATE TABLE IF NOT EXISTS produtos_lojaprodutos (COD_BARRA VARCHAR(255) PRIMARY KEY, QUANTI_PRODUTO VARCHAR(255), NOME_PRODUTO VARCHAR(255) , VALOR VARCHAR(255))";
         try (Statement stmt = this.connection.createStatement()) {
             stmt.execute(sql);
@@ -44,9 +44,8 @@ public class EstoqueDAO {
                         rs.getString("COD_BARRA"),
                         rs.getString("QUANTI_PRODUTO"),
                         rs.getString("NOME_PRODUTO"),
-                        rs.getString("VALOR")
-                );
-    
+                        rs.getString("VALOR"));
+
                 produtos.add(produto);
             }
         } catch (SQLException ex) {
@@ -56,7 +55,30 @@ public class EstoqueDAO {
         }
         return produtos;
     }
-    
+
+    public List<Estoque> listarTodos() {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Estoque> produtos = new ArrayList<>();
+        try {
+            stmt = connection.prepareStatement("SELECT * FROM produtos_lojaprodutos ");
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                Estoque produto = new Estoque(
+                        rs.getString("COD_BARRA"),
+                        rs.getString("QUANTI_PRODUTO"),
+                        rs.getString("NOME_PRODUTO"),
+                        rs.getString("VALOR"));
+
+                produtos.add(produto);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erro ao listar produtos por código de barras: " + ex.getMessage());
+        } finally {
+            ConnectionFactory.closeConnection(connection, stmt, rs);
+        }
+        return produtos;
+    }
 
     public void cadastrar(String codBarra, String quantiProduto, String nomeProduto, String valor) {
         PreparedStatement stmt = null;
@@ -93,6 +115,7 @@ public class EstoqueDAO {
             ConnectionFactory.closeConnection(connection, stmt);
         }
     }
+
     public void atualizarQuant(String codBarra, String quantiProduto) {
         PreparedStatement stmt = null;
         String sql = "UPDATE produtos_lojaprodutos SET quanti_produto = ? WHERE COD_BARRA = ?";

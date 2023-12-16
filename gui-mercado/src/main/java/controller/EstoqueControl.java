@@ -4,213 +4,69 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import java.sql.SQLException;
 import Model.Estoque;
-
+import app.Connection.EstoqueDAO;
 
 public class EstoqueControl {
-    private Estoque estoque;
-    private EstoqueControl produtoDAO; // Adicione um campo para o ProdutoDAO
+    // atributos
+    private List<Estoque> produtos;
+    private DefaultTableModel tableModel;
+    private JTable table;
 
-    public EstoqueControl() {
-        this.estoque = new Estoque();
-        this.produtoDAO = new EstoqueControl(); // Inicialize o ProdutoDAO
-        // Adicione alguns produtos ao estoque para teste
-
+    // contrutor
+    public EstoqueControl(List<Estoque> produtos, DefaultTableModel tableModel, JTable table) {
+        this.produtos = produtos;
+        this.tableModel = tableModel;
+        this.table = table;
     }
+    // metodos CRUD
+    //////////////
 
-    /**
-     * Adiciona um novo produto ao estoque e atualiza o banco de dados.
-     *
-     * @param codigoBarra Código de barras do produto.
-     * @param nome        Nome do produto.
-     * @param quantidade  Quantidade do produto.
-     * @param preco       Preço do produto.
-     */
-    public void adicionarProduto(String codigoBarra, String nome, int quantidade, double preco) {
-        try {
-            // Cria um novo produto
-            EstoqueControl novoProduto = new EstoqueControl();
+    // Método para atualizar a tabela de exibição com dados do banco de dados
+    private void atualizarTabela() {
+        tableModel.setRowCount(0); // Limpa todas as linhas existentes na tabela
+        produtos = new EstoqueDAO().listarTodos();
+        // Obtém os carros atualizados do banco de dados
+        for (Estoque produto : produtos) {
+            // Adiciona os dados de cada carro como uma nova linha na tabela Swing
+            tableModel.addRow(new Object[] { produto.getCodBarra(), produto.getNomeProduto(),
 
-            // Adiciona o produto ao estoque
-            estoque.adicionarProduto(novoProduto);
-            System.out.println("Produto adicionado com sucesso!");
-
-            // Atualiza a tabela do banco de dados
-            atualizarTabelaBancoDados();
-        } catch (IllegalArgumentException e) {
-            System.err.println("Erro ao adicionar produto: " + e.getMessage());
+                    produto.getQuantiProduto(),produto.getValor() });
         }
     }
 
-    /**
-     * Remove um produto do estoque e atualiza o banco de dados.
-     *
-     * @param produto Produto a ser removido.
-     */
-    public void removerProduto(EstoqueControl produto) {
-        try {
-            // Remove o produto do estoque
-            estoque.removerProduto(produto);
-            System.out.println("Produto removido com sucesso!");
+    // Método para cadastrar um novo carro no banco de dados
+    public void cadastrar(String codBarra, String quantiProduto, String nomeProduto, String valor) {
 
-            // Atualiza a tabela do banco de dados
-            atualizarTabelaBancoDados();
-        } catch (IllegalArgumentException e) {
-            System.err.println("Erro ao remover produto: " + e.getMessage());
-        }
+        new EstoqueDAO().cadastrar(codBarra,quantiProduto,nomeProduto,valor);
+        // Chama o método de cadastro no banco de dadosatualizarTabela(); // Atualiza a
+        // tabela de exibição após o cadastro
+        atualizarTabela(); // Atualiza a tabela de exibição após a atualização
+
     }
 
-    /**
-     * Lista todos os produtos do estoque.
-     *
-     * @return Lista de produtos no estoque.
-     */
-    public List<EstoqueControl> listarProdutosDoBanco() {
-        try {
-            return produtoDAO.listarTodos();
-        } catch (Exception e) {
-            System.err.println("Erro ao listar produtos do banco de dados: " + e.getMessage());
-            return null;
-        }
+    // Método para atualizar os dados de um carro no banco de dados
+    public void atualizar(String codBarra, String quantiProduto, String nomeProduto, String valor) {
+        new EstoqueDAO().atualizar(codBarra,quantiProduto,nomeProduto,valor);
+        // Chama o método de atualização no banco de dados
+        atualizarTabela(); // Atualiza a tabela de exibição após a atualização
     }
 
-    private List<EstoqueControl> listarTodos() {
-        return null;
+    // Método para apagar um carro do banco de dados
+    public void apagar(String placa) {
+        new EstoqueDAO().apagar(placa);
+        // Chama o método de exclusão no banco de dados
+        atualizarTabela(); // Atualiza a tabela de exibição após a exclusão
     }
 
-    /**
-     * @param codigoBarras
-     * @return
-     */
-    public Produtos obterProdutoPorCodigoBarras(String codigoBarras) {
-        try {
-            Optional<EstoqueControl> produtoBanco = produtoDAO.listarTodos().stream()
-                    .filter(p -> codigoBarras.equals(p.getCodigoBarra()))
-                    .findFirst();
+    //Busca Produto peol código
 
-            if (produtoBanco.isPresent()) {
-                return produtoBanco.get();
-            }
-
-            Optional<Estoque> produtoEstoque = estoque.listarProdutos().stream()
-                    .filter(p -> codigoBarras.equals(p.getCodBarra()))
-                    .findFirst();
-
-            return produtoEstoque.orElse(null);
-        } catch (Exception e) {
-            System.err.println("Erro ao obter produto por código de barras: " + e.getMessage());
-            return null;
-        }
-    }
-
-    private Object getCodigoBarra() {
-        return null;
-    }
-
-    void zirQuantidadeDoEstoque(String codigoBarras, int quantidade) {
-        // Verifica se o código de barras e a quantidade são válidos
-        if (codigoBarras != null && !codigoBarras.isEmpty() && quantidade > 0) {
-            // Obtém o produto do estoque usando o código de barras
-            Estoque produto = estoque.obterProdutoPorCodigoBarras(codigoBarras);
-
-            if (produto != null) {
-                int quantidadeAtual = produto.getQuantiProduto();
-
-                if (quantidadeAtual >= quantidade) {
-                    int novaQuantidade = quantidadeAtual - quantidade;
-                    produto.setQuantiProduto(novaQuantidade);
-                    System.out.println("Quantidade deduzida com sucesso. Novo estoque: " + novaQuantidade);
-
-                    // Atualizar a lista do estoque após a dedução
-                    atualizarTabelaBancoDados();
-                } else {
-                    System.err.println(
-                            "Quantidade insuficiente em estoque para dedução. Quantidade atual: " + quantidadeAtual);
-                }
-            } else {
-                System.err.println("Produto não encontrado. Código de Barras: " + codigoBarras);
-            }
-        } else {
-            System.err.println("Código de barras ou quantidade inválida.");
-        }
-    }
-
-    public void imprimirCupomFiscal(double totalCompra, String dataHoraAtual,
-            ConclusaoCompraPainel conclusaoCompraPainel) {
-        DefaultListModel<String> detalhesCompraModel = conclusaoCompraPainel.getDetalhesCompraModel();
-
-        // Obtém o valor total da compra
-        String valorTotal = String.format("%.2f", totalCompra);
-
-        // Obtém a quantidade de produtos (assumindo que detalhesCompraModel seja um
-        // campo da classe)
-        int quantidadeProdutos = detalhesCompraModel.size();
-
-        // Constrói o conteúdo do cupom fiscal
-        StringBuilder cupomFiscal = new StringBuilder();
-        cupomFiscal.append("Data/Hora: ").append(dataHoraAtual).append("\n");
-        cupomFiscal.append("Valor Total: R$").append(valorTotal).append("\n");
-        cupomFiscal.append("Quantidade de Produtos: ").append(quantidadeProdutos).append("\n");
-        cupomFiscal.append("\nDetalhes da Compra:\n");
-
-        // Adiciona detalhes de cada produto (assumindo que detalhesCompraModel seja um
-        // campo da classe)
-        for (int i = 0; i < detalhesCompraModel.size(); i++) {
-            cupomFiscal.append(detalhesCompraModel.getElementAt(i)).append("\n");
-        }
-
-        // Lógica para imprimir o Cupom Fiscal
-        // Substitua esta linha com a lógica real de impressão
-        System.out.println("Cupom Fiscal impresso com sucesso:\n" + cupomFiscal.toString());
-        System.out.println("Cupom Fiscal impresso com sucesso:\n" + cupomFiscal.toString());
-        JOptionPane.showMessageDialog(null, "Cupom Fiscal impresso com sucesso:\n" + cupomFiscal.toString());
-    }
-
-    public boolean codigoDeBarrasExiste(String codigoBarra) {
-        return produtoDAO.registroExiste(codigoBarra);
-    }
-
-    public void removerProduto(String codigoBarra) throws SQLException {
-        // Verifica se o produto existe antes de tentar remover
-        if (produtoDAO.registroExiste(codigoBarra)) {
-            EstoqueControl produto = produtoDAO.obterProdutoPorCodigoBarra(codigoBarra);
-            produtoDAO.removerProduto(produto);
-        } else {
-            throw new SQLException("Produto não encontrado.");
-        }
-    }
-
-    private boolean registroExiste(String codigoBarra) {
-        return false;
-    }
-
-    public EstoqueControl obterProdutoPorCodigoBarra(String codigoBarra) throws SQLException {
-        // Você pode adicionar validações adicionais conforme necessário
-        return produtoDAO.obterProdutoPorCodigoBarra(codigoBarra);
-    }
-
-    /**
-     * Atualiza a tabela do banco de dados com os produtos do estoque.
-     */
-    private void atualizarTabelaBancoDados() {
-        // Obtém a lista de produtos do estoque
-        List<Estoque> produtos = estoque.listarProdutos();
-
-        // Atualiza a tabela no banco de dados
-        produtoDAO.atualizarTabelaBancoDados();
-    }
-
-    public void cadastrar(String text, String text2, String text3, String text4) {
-    }
-
-    public void atualizar(String text, String text2, String text3, String text4) {
-    }
-
-    public void apagar(String text) {
-    }
-
+    //atualizar produtoQuantidade
 }
