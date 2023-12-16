@@ -90,40 +90,5 @@ public class ClientesDAO {
         }
     }
 
-    // Atualizar dados no banco
-    public void atualizar(String cpf, String nome) {
-        PreparedStatement stmt = null;
-        // Define a instrução SQL parametrizada para atualizar dados pela cpf
-        String sql = "UPDATE clientes_lojaclientes SET nome = ? WHERE cpf = ?";
-        try {
-            stmt = connection.prepareStatement(sql);
-            stmt.setString(1, nome);
-            // cpf é chave primaria não pode ser alterada.
-            stmt.setString(2, cpf);
-            stmt.executeUpdate();
-            System.out.println("Dados atualizados com sucesso");
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao atualizar dados no banco de dados.", e);
-        } finally {
-            ConnectionFactory.closeConnection(connection, stmt);
-        }
-    }
-
-    // Apagar dados do banco
-    public void apagar(String cpf) {
-        PreparedStatement stmt = null;
-        // Define a instrução SQL parametrizada para apagar dados pela cpf
-        String sql = "DELETE FROM clientes_lojaclientes WHERE cpf = ?";
-        try {
-            stmt = connection.prepareStatement(sql);
-            stmt.setString(1, cpf);
-            stmt.executeUpdate(); // Executa a instrução SQL
-            System.out.println("Dado apagado com sucesso");
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao apagar dados no banco de dados.", e);
-        } finally {
-
-            ConnectionFactory.closeConnection(connection, stmt);
-        }
-    }
+    
 }

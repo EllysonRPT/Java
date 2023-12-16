@@ -6,6 +6,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import java.util.*;
 
 import Model.Clientes;
 import app.Connection.ClientesDAO;
@@ -16,49 +17,34 @@ import app.Connection.ClientesDAO;
 public class ClienteControll {
     // Atributos
     private List<Clientes> clientes;
-    private DefaultTableModel tableModel;
-    private JTable table;
 
     // construtor
-    public ClienteControll(List<Clientes> clientes, DefaultTableModel tableModel, JTable table) {
+    public ClienteControll(List<Clientes> clientes) {
         this.clientes = clientes;
-        this.tableModel = tableModel;
-        this.table = table;
+
     }
     ////////
-    
+
     // métodos CRUD
 
     // Método para atualizar a tabela de exibição com dados do banco de dados
-    private void atualizarTabela(String cpf) {
-        tableModel.setRowCount(0); // Limpa todas as linhas existentes na tabela
-        clientes = new ClientesDAO().listarClientes(cpf);
-        // Obtém os clientes atualizados do banco de dados
-        for (Clientes cliente : clientes) {
-            // Adiciona os dados de cada cliente como uma nova linha na tabela Swing
-            tableModel.addRow(new Object[] { cliente.getCpf(), cliente.getNome() });
-        }
-    }
 
     // Método para cadastrar um novo cliente no banco de dados
     public void cadastrar(String cpf, String nome) {
+        // depuracao
+
         new ClientesDAO().cadastrar(cpf, nome);
         // Chama o método de cadastro no banco de dados
-        atualizarTabela(cpf); // Atualiza a tabela de exibição após o cadastro
+
     }
 
     // Método para atualizar os dados de um cliente no banco de dados
-    public void atualizar(String cpf, String nome) {
-        new ClientesDAO().atualizar(cpf, nome);
-        // Chama o método de atualização no banco de dados
-        atualizarTabela(cpf); // Atualiza a tabela de exibição após a atualização
+    public List<Clientes> listarClientes(String cpf) {
+
+        clientes = new ClientesDAO().listarClientes(cpf);
+        
+        return clientes;
+
     }
 
-    // Método para apagar um cliente do banco de dados
-    public void apagar(String cpf) {
-        new ClientesDAO().apagar(cpf);
-        // Chama o método de exclusão no banco de dados
-        atualizarTabela(cpf); // Atualiza a tabela de exibição após a exclusão
-    }
-    
 }

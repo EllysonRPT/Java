@@ -5,9 +5,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import Controller.ProdutoControl;
-import Model.Produtos;
-import app.Connection.ProdutosDAO;
+import Controller.EstoqueControl;
+import Model.Estoque;
+import app.Connection.EstoqueDAO;
 
 public class PainelEstoque extends JPanel {
 
@@ -21,7 +21,7 @@ public class PainelEstoque extends JPanel {
     private JButton apagar;
     private JTable table;
     private DefaultTableModel tableModel;
-    private List<Produtos> produtos;
+    private List<Estoque> produtos;
 
     public PainelEstoque() {
         // Initialize components
@@ -53,14 +53,16 @@ public class PainelEstoque extends JPanel {
         add(apagar);
         add(new JScrollPane(table));  // Add a JScrollPane for the table
 
-        new ProdutosDAO().criaTabela();
+        new EstoqueDAO().criaTabela();
+
+        EstoqueControl operacoes = new EstoqueControl();
 
         // Action listeners for buttons
         cadastrar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    ProdutoControl operacoes = new ProdutoControl(produtos, tableModel, table);
+                    
                     operacoes.cadastrar(
                            
                             codigoField.getText(),
@@ -86,7 +88,7 @@ public class PainelEstoque extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    ProdutoControl operacoes = new ProdutoControl(produtos, tableModel, table);
+                    EstoqueControl operacoes = new EstoqueControl();
                     operacoes.atualizar(
                            
                             codigoField.getText(),
@@ -108,7 +110,7 @@ public class PainelEstoque extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    ProdutoControl operacoes = new ProdutoControl(produtos, tableModel, table);
+                    EstoqueControl operacoes = new EstoqueControl(produtos, tableModel, table);
                     int escolha = JOptionPane.showConfirmDialog(null, "Deseja Apagar?", "Confirmação",
                             JOptionPane.YES_NO_OPTION);
                     if (escolha == JOptionPane.YES_OPTION) {
@@ -137,8 +139,8 @@ public class PainelEstoque extends JPanel {
 
     private void atualizarTabela() {
         tableModel.setRowCount(0);
-        produtos = new ProdutosDAO().listarProduto(null);
-        for (Produtos produto : produtos) {
+        produtos = new EstoqueDAO().listarProduto(null);
+        for (Estoque produto : produtos) {
             tableModel.addRow(new Object[]{
                     produto.getCodBarra(),
                     produto.getQuantiProduto(),

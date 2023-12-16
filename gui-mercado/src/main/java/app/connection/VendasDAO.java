@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import Model.Registro; // Assuming you have a 'Registro' class
+import Model.Estoque; // Assuming you have a 'Registro' class
 
 /**
  * RegistroDAO
@@ -16,7 +16,7 @@ import Model.Registro; // Assuming you have a 'Registro' class
 public class VendasDAO {
     // atributo
     private Connection connection;
-    private List<Registro> registros;
+    private List<Estoque> registros;
 
     // construtor
     public VendasDAO() {
@@ -38,7 +38,7 @@ public class VendasDAO {
     }
 
     // Listar todos os valores cadastrados
-    public List<Registro> listarTodos() {
+    public List<Estoque> listarTodos() {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         registros = new ArrayList<>();
@@ -46,10 +46,11 @@ public class VendasDAO {
             stmt = connection.prepareStatement("SELECT * FROM vendas_lojavendas");
             rs = stmt.executeQuery();
             while (rs.next()) {
-                Registro registro = new Registro(
+                Estoque registro = new Estoque(
                         rs.getString("produtos"),
                         rs.getString("Cliente"),
-                        rs.getString("ValorVenda"));
+                        rs.getString("ValorVenda"),
+                        rs.getString(""));
                 registros.add(registro);
             }
         } catch (SQLException ex) {

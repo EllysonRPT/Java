@@ -8,16 +8,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import Model.Produtos;
+import Model.Estoque;
 
 /**
  * ProdutosDAO
  */
-public class ProdutosDAO {
+public class EstoqueDAO {
     private Connection connection;
-    private List<Produtos> produtos;
+    private List<Estoque> produtos;
 
-    public ProdutosDAO() {
+    public EstoqueDAO() {
         this.connection = ConnectionFactory.getConnection();
     }
 
@@ -31,31 +31,32 @@ public class ProdutosDAO {
         }
     }
 
-    public List<Produtos> listarProduto(String codigo) {
+    public List<Estoque> listarProduto(String codigo) {
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        produtos = new ArrayList<>();
+        List<Estoque> produtos = new ArrayList<>();
         try {
             stmt = connection.prepareStatement("SELECT * FROM produtos_lojaprodutos WHERE COD_BARRA = ?");
             stmt.setString(1, codigo);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                Produtos produto = new Produtos(
+                Estoque produto = new Estoque(
                         rs.getString("COD_BARRA"),
                         rs.getString("QUANTI_PRODUTO"),
                         rs.getString("NOME_PRODUTO"),
                         rs.getString("VALOR")
                 );
-
+    
                 produtos.add(produto);
             }
         } catch (SQLException ex) {
-            System.out.println(ex);
+            System.out.println("Erro ao listar produtos por código de barras: " + ex.getMessage());
         } finally {
             ConnectionFactory.closeConnection(connection, stmt, rs);
         }
         return produtos;
     }
+    
 
     public void cadastrar(String codBarra, String quantiProduto, String nomeProduto, String valor) {
         PreparedStatement stmt = null;
@@ -84,6 +85,21 @@ public class ProdutosDAO {
             stmt.setString(2, quantiProduto);
             stmt.setString(3, valor);
             stmt.setString(4, nomeProduto);
+            stmt.executeUpdate();
+            System.out.println("Dados atualizados com sucesso");
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao atualizar dados no banco de dados.", e);
+        } finally {
+            ConnectionFactory.closeConnection(connection, stmt);
+        }
+    }
+    public void atualizarQuant(String codBarra, String quantiProduto) {
+        PreparedStatement stmt = null;
+        String sql = "UPDATE produtos_lojaprodutos SET quanti_produto = ? WHERE COD_BARRA = ?";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, codBarra);
+            stmt.setString(2, quantiProduto);
             stmt.executeUpdate();
             System.out.println("Dados atualizados com sucesso");
         } catch (SQLException e) {

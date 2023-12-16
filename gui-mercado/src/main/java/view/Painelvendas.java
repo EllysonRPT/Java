@@ -5,11 +5,12 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import Controller.ProdutoControl;
+import Controller.EstoqueControl;
 import Model.Clientes;
+import Model.Estoque;
 import Model.Produtos;
 import app.Connection.ClientesDAO;
-import app.Connection.ProdutosDAO;
+import app.Connection.EstoqueDAO;
 import app.Connection.VendasDAO;
 
 public class PainelVendas extends JPanel {
@@ -21,7 +22,7 @@ public class PainelVendas extends JPanel {
     private JButton validar;
     private JTable table;
     private DefaultTableModel tableModel;
-    private List<Produtos> produtos;
+    private List<Estoque> produtos;
     private JTextField cpfField;
 
     public PainelVendas() {
@@ -59,7 +60,7 @@ public class PainelVendas extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String codigo = codigoField.getText();
-                List<Produtos> produtos = new ProdutosDAO().listarProduto(codigo);
+                List<Estoque> produtos = new EstoqueDAO().listarProduto(codigo);
                 boolean encontrado = false;
 
                 for (Produtos produto : produtos) {
@@ -106,7 +107,7 @@ public class PainelVendas extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    ProdutoControl operacoes = new ProdutoControl(produtos, tableModel, table);
+                    EstoqueControl operacoes = new EstoqueControl(produtos, tableModel, table);
                     int escolha = JOptionPane.showConfirmDialog(null, "Deseja Apagar?", "Confirmação",
                             JOptionPane.YES_NO_OPTION);
                     if (escolha == JOptionPane.YES_OPTION) {
@@ -133,7 +134,7 @@ public class PainelVendas extends JPanel {
 
     private void atualizarTabela() {
         tableModel.setRowCount(0);
-        produtos = new ProdutosDAO().listarProduto(null);
+        produtos = new EstoqueDAO().listarProduto(null);
         for (Produtos produto : produtos) {
             tableModel.addRow(new Object[] {
                     produto.getCodBarra(),
