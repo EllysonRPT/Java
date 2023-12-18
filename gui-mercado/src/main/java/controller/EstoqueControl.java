@@ -1,72 +1,106 @@
 package Controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import java.sql.SQLException;
+import Connection.EstoqueDAO;
 import Model.Estoque;
-import app.Connection.EstoqueDAO;
 
 public class EstoqueControl {
-    // atributos
-    private List<Estoque> produtos;
+    // Atributos
+    private List<Estoque> estoques;
     private DefaultTableModel tableModel;
     private JTable table;
 
-    // contrutor
-    public EstoqueControl(List<Estoque> produtos, DefaultTableModel tableModel, JTable table) {
-        this.produtos = produtos;
+    // Construtor
+    public EstoqueControl(List<Estoque> estoques, DefaultTableModel tableModel, JTable table) {
+        this.estoques = estoques;
         this.tableModel = tableModel;
         this.table = table;
     }
-    // metodos CRUD
-    //////////////
 
-    // Método para atualizar a tabela de exibição com dados do banco de dados
-    private void atualizarTabela() {
-        tableModel.setRowCount(0); // Limpa todas as linhas existentes na tabela
-        produtos = new EstoqueDAO().listarTodos();
-        // Obtém os carros atualizados do banco de dados
-        for (Estoque produto : produtos) {
-            // Adiciona os dados de cada carro como uma nova linha na tabela Swing
-            tableModel.addRow(new Object[] { produto.getCodBarra(), produto.getNomeProduto(),
+    // Atualiza a tabela Swing com os dados do banco de dados
+    public void atualizarTabela() {
+        try {
+            // Limpa todas as linhas existentes na tabela
+            tableModel.setRowCount(0);
 
-                    produto.getQuantiProduto(),produto.getValor() });
+            // Obtém os produtos atualizados do banco de dados
+            estoques = new EstoqueDAO().listarTodos();
+
+            // Adiciona os dados de cada produto como uma nova linha na tabela Swing
+            for (Estoque estoque : estoques) {
+                tableModel.addRow(new Object[] { estoque.getNomeProduto(), estoque.getCodBarras(), estoque.getquantidade(),
+                        estoque.getpreco() });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar a tabela: " + e.getMessage());
         }
     }
 
-    // Método para cadastrar um novo carro no banco de dados
-    public void cadastrar(String codBarra, String quantiProduto, String nomeProduto, String valor) {
+    // Cadastra um novo produto no banco de dados
+    public void cadastrar(String nomeProduto, String codBarras, String quantidade, String preco) {
+        try {
+            // Verifica se algum campo está em branco
+            if (nomeProduto.isEmpty() || codBarras.isEmpty() || quantidade.isEmpty() || preco.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "ATENÇÃO! \nExistem campos em branco");
+                return;
+            }
 
-        new EstoqueDAO().cadastrar(codBarra,quantiProduto,nomeProduto,valor);
-        // Chama o método de cadastro no banco de dadosatualizarTabela(); // Atualiza a
-        // tabela de exibição após o cadastro
-        atualizarTabela(); // Atualiza a tabela de exibição após a atualização
-
+            // Chama o método de cadastro no banco de dados
+            new EstoqueDAO().cadastrar(nomeProduto, codBarras, quantidade, preco);
+            atualizarTabela(); // Atualiza a tabela de exibição após o cadastro
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar produto: " + e.getMessage());
+        }
     }
 
-    // Método para atualizar os dados de um carro no banco de dados
-    public void atualizar(String codBarra, String quantiProduto, String nomeProduto, String valor) {
-        new EstoqueDAO().atualizar(codBarra,quantiProduto,nomeProduto,valor);
-        // Chama o método de atualização no banco de dados
-        atualizarTabela(); // Atualiza a tabela de exibição após a atualização
+    // Atualiza os dados de um produto no banco de dados
+    public void atualizar(String nomeProduto, String codBarras, String quantidade, String preco) {
+        try {
+            // Verifica se algum campo está em branco
+            if (nomeProduto.isEmpty() || codBarras.isEmpty() || quantidade.isEmpty() || preco.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "ATENÇÃO! \nExistem campos em branco");
+            }else if (!codBarras.isEmpty()) {
+                JOptionPane.showMessageDialog(null,"ATENÇÃO! \nEsse PRODUTO já se encontra Cadastrado");
+            }  else {
+                // Ajuste na ordem dos parâmetros
+                new EstoqueDAO().atualizar(nomeProduto, codBarras, quantidade, preco);
+                atualizarTabela(); // Atualiza a tabela de exibição após a atualização
+                // Limpa os campos de entrada após a operação de atualização
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar produto: " + e.getMessage());
+        }
     }
 
-    // Método para apagar um carro do banco de dados
-    public void apagar(String placa) {
-        new EstoqueDAO().apagar(placa);
-        // Chama o método de exclusão no banco de dados
-        atualizarTabela(); // Atualiza a tabela de exibição após a exclusão
+    // Apaga um produto do banco de dados
+    public void apagar(String codBarras) {
+        try {
+            // Verifica se o código de barras é válido
+            if (codBarras == null || codBarras.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Selecione um produto para apagar.");
+                return;
+            }
+
+            // Confirmação do usuário para apagar o produto
+            int resposta = JOptionPane.showConfirmDialog(null, "Tem certeza de que deseja apagar os campos?", "Confirmação",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (resposta == JOptionPane.YES_OPTION) {
+                // Chama o método de exclusão no banco de dados
+                new EstoqueDAO().apagar(codBarras);
+                JOptionPane.showMessageDialog(null, "O Produto de Código " + codBarras + " foi deletado!");
+            } else {
+                JOptionPane.showMessageDialog(null, "O produto não foi deletado!");
+            }
+
+            atualizarTabela(); // Atualiza a tabela de exibição após a exclusão
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao apagar produto: " + e.getMessage());
+        }
     }
-
-    //Busca Produto peol código
-
-    //atualizar produtoQuantidade
 }

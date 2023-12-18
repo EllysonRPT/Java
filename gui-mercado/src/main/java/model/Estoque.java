@@ -1,74 +1,49 @@
 package Model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+public class Estoque {
 
-import Controller.EstoqueControl;
-
-public class Estoque<Produtos> {
-
-    // atributos
-    private String codBarra;
-    private String quantiProduto;
     private String nomeProduto;
-    private String valor;
+    private String codBarras;
+    private String quantidade;
+    private String preco;
 
-    //construtor
-
-    public Estoque(String codBarra, String quantiProduto, String nomeProduto, String valor) {
-        this.codBarra = codBarra;
-        this.quantiProduto = quantiProduto;
+    public Estoque(String nomeProduto, String codBarras, String quantidade, String preco) {
         this.nomeProduto = nomeProduto;
-        this.valor = valor;
-
+        this.codBarras = codBarras;
+        this.quantidade = quantidade;
+        this.preco = preco;
     }
-
-    //métodos get set
-    public String getCodBarra() {
-        return codBarra;
-    }
-
-
-    public void setCodBarra(String codBarra) {
-        this.codBarra = codBarra;
-    }
-
-
-    public String getQuantiProduto() {
-        return quantiProduto;
-    }
-
-
-    public void setQuantiProduto(String quantiProduto) {
-        this.quantiProduto = quantiProduto;
-    }
-
 
     public String getNomeProduto() {
         return nomeProduto;
     }
 
-
     public void setNomeProduto(String nomeProduto) {
         this.nomeProduto = nomeProduto;
     }
 
-
-    public String getValor() {
-        return valor;
+    public String getCodBarras() {
+        return codBarras;
     }
 
-
-    public void setValor(String valor) {
-        this.valor = valor;
+    public void setCodBarras(String codBarras) {
+        this.codBarras = codBarras;
     }
 
-    public Collection<Estoque> listarProdutos() {
-        return null;
+    public String getquantidade() {
+        return quantidade;
     }
 
-    
+    public void setquantidade(String quantidade) {
+        this.quantidade = quantidade;
+    }
 
- 
+    public String getpreco() {
+        return preco;
+    }
+
+    public void setpreco(String preco) {
+        this.preco = preco;
+    }
+
 }
