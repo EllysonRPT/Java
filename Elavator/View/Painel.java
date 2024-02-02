@@ -37,7 +37,7 @@ public class Painel extends JFrame {
                 int distanciaElevador1 = Math.abs(elevador1.getAndarAtual() - andarDesejado);
                 int distanciaElevador2 = Math.abs(elevador2.getAndarAtual() - andarDesejado);
 
-                if (distanciaElevador1 < distanciaElevador2) {
+                if (distanciaElevador1 <= distanciaElevador2) {
                     elevador1.setAndarAtual(andarDesejado);
                     JLabel andarLabel1 = (JLabel) ((JPanel) getContentPane().getComponent(1)).getComponent(1);
                     andarLabel1.setText("Andar:" + elevador1.getAndarAtual());
