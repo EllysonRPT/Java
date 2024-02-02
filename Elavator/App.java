@@ -5,7 +5,7 @@ import View.Painel;
 
 public class App {
     public static void main(String[] args) {
-    new Painel();
+    new Funcao().Chamar();;
         }
     }
 
