@@ -41,8 +41,11 @@ public class Elevador {
     public void setElevador2(int elevador2) {
         this.elevador2 = elevador2;
     }
+    public String getNumero() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getNumero'");
+    }
 
-   
-
+    
   
 }
